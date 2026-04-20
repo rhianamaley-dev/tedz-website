@@ -53,9 +53,19 @@ function ChatWidget({ isOpen, onToggle }) {
     setInput("");
     setMessages((p) => [...p, { role: "user", content: msg }]);
     setTyping(true);
-    await new Promise((r) => setTimeout(r, 700 + Math.random() * 1000));
-    setTyping(false);
-    setMessages((p) => [...p, { role: "assistant", content: getResponse(msg) }]);
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: msg }),
+      });
+      const data = await res.json();
+      setTyping(false);
+      setMessages((p) => [...p, { role: "assistant", content: data.reply || "Sorry, something went wrong. Please try again." }]);
+    } catch (error) {
+      setTyping(false);
+      setMessages((p) => [...p, { role: "assistant", content: "Sorry, I'm having trouble connecting. Please try again in a moment." }]);
+    }
   };
 
   if (!isOpen)
