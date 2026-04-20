@@ -31,7 +31,7 @@ function renderMessageContent(content) {
 
 /* ────────────────────────────────────────────
    TEDZ CHAT WIDGET
-   Powered by Claude API — real AI responses
+   Powered by Claude API with conversation memory
    ──────────────────────────────────────────── */
 
 function ChatWidget({ isOpen, onToggle }) {
@@ -58,13 +58,17 @@ function ChatWidget({ isOpen, onToggle }) {
     if (!input.trim()) return;
     const msg = input.trim();
     setInput("");
-    setMessages((p) => [...p, { role: "user", content: msg }]);
+    const updatedMessages = [...messages, { role: "user", content: msg }];
+    setMessages(updatedMessages);
     setTyping(true);
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: msg }),
+        body: JSON.stringify({
+          message: msg,
+          history: messages.slice(1).map(m => ({ role: m.role, content: m.content })),
+        }),
       });
       const data = await res.json();
       setTyping(false);
