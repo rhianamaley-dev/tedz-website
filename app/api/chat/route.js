@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(request) {
   try {
-    const { message, businessInfo } = await request.json();
+    const { message, businessInfo, history } = await request.json();
 
     const systemPrompt = businessInfo
       ? `You are the AI chat assistant for ${businessInfo.name}. ${businessInfo.prompt || ""}
@@ -11,14 +11,14 @@ BUSINESS INFO:
 ${businessInfo.details || "No details provided."}
 
 RULES:
-1. Be friendly and conversational. Keep responses short (2-3 sentences max).
+1. Be professional and conversational. Keep responses short (2-3 sentences max).
 2. NEVER make up information not provided above.
-3. Always try to collect: name, phone number, and what service they need.
+3. Collect name, phone number, and service needed - but ONLY ask for information you don't already have. If the customer already told you their name or phone, do NOT ask again.
 4. For emergencies, give the phone number immediately.
 5. Never give medical advice or diagnose problems.
 6. NEVER use markdown formatting like **, ##, or bullet symbols. NEVER use emojis. Write in plain text only.
-7. When a customer wants to book an appointment, give them this link: https://cal.com/rhiana-maley-zd0c7u/service-appointment and tell them to pick a time that works for them.`
-      :`You are the AI assistant for TEDZ Integrative Systems, an AI chat and lead capture platform for small businesses. Keep responses to 2-3 sentences max. Be professional and conversational but not overly friendly. NEVER use markdown formatting. NEVER use emojis. Ask what type of business they run so you can tailor your answer. Try to collect their name, email, and business type.`;
+7. When a customer wants to book an appointment and you have their name and phone number, give them this link: https://cal.com/rhiana-maley-zd0c7u/service-appointment and tell them to pick a time.`
+      :`You are the AI assistant for TEDZ Integrative Systems, an AI chat and lead capture platform for small businesses. Keep responses to 2-3 sentences max. Be professional and conversational but not overly friendly. NEVER use markdown formatting. NEVER use emojis. Ask what type of business they run so you can tailor your answer. Collect their name, email, and business type - but ONLY ask for information you don't already have from previous messages in this conversation.`;
 
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
@@ -31,7 +31,10 @@ RULES:
         model: "claude-haiku-4-5-20251001",
         max_tokens: 300,
         system: systemPrompt,
-        messages: [{ role: "user", content: message }],
+        messages: [
+          ...(history || []),
+          { role: "user", content: message }
+        ],
       }),
     });
 
