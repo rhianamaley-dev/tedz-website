@@ -128,7 +128,7 @@ function renderMessageContent(content, linkColor) {
 }
 
 // ============================================================
-// CHAT WIDGET FOR DEMOS
+// CHAT WIDGET FOR DEMOS (with conversation memory)
 // ============================================================
 function DemoChat({ client, isOpen, onToggle }) {
   const [messages, setMessages] = useState([
@@ -161,6 +161,7 @@ function DemoChat({ client, isOpen, onToggle }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message: msg,
+          history: messages.slice(1).map(m => ({ role: m.role, content: m.content })),
           businessInfo: {
             name: client.name,
             details: client.details,
@@ -278,11 +279,12 @@ function DemoChat({ client, isOpen, onToggle }) {
         </button>
       </div>
 
-     <div style={{ padding: "6px 14px", background: "#F8FAFB", borderTop: "1px solid #EDF0F3", textAlign: "center" }}>
+      <div style={{ padding: "6px 14px", background: "#F8FAFB", borderTop: "1px solid #EDF0F3", textAlign: "center" }}>
         <a href="https://tedzintegrativesystems.com" target="_blank" rel="noopener noreferrer" style={{ color: "#94A3B8", fontSize: 11, textDecoration: "none", fontWeight: 500 }}>
           Powered by <span style={{ color: "#D4A853", fontWeight: 700 }}>TEDZ</span>
         </a>
-      </div> <style>{`@keyframes demoDot { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }`}</style>
+      </div>
+      <style>{`@keyframes demoDot { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }`}</style>
     </div>
   );
 }
