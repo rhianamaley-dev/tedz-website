@@ -100,6 +100,34 @@ Financing: Available on jobs over $1,000`,
 };
 
 // ============================================================
+// HELPER: Render message content with clickable booking links
+// ============================================================
+function renderMessageContent(content, linkColor) {
+  return content.split(/(https?:\/\/[^\s]+)/g).map((part, idx) => {
+    if (part.match(/^https?:\/\//)) {
+      return (
+        <a
+          key={idx}
+          href={part}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            color: linkColor,
+            textDecoration: "underline",
+            fontWeight: 600,
+            display: "inline-block",
+            marginTop: 4,
+          }}
+        >
+          Click here to book →
+        </a>
+      );
+    }
+    return part;
+  });
+}
+
+// ============================================================
 // CHAT WIDGET FOR DEMOS
 // ============================================================
 function DemoChat({ client, isOpen, onToggle }) {
@@ -204,7 +232,9 @@ function DemoChat({ client, isOpen, onToggle }) {
               ...(m.role === "user"
                 ? { background: client.color, color: "#fff", borderBottomRightRadius: 4 }
                 : { background: "#fff", color: "#1E293B", border: "1px solid #E5E9ED", borderBottomLeftRadius: 4, boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }),
-            }}>{m.content}</div>
+            }}>
+              {m.role === "assistant" ? renderMessageContent(m.content, client.color) : m.content}
+            </div>
           </div>
         ))}
         {typing && (
