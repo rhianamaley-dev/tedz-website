@@ -135,6 +135,10 @@ function ChatWidget({ isOpen, onToggle }) {
             <polygon points="22 2 15 22 11 13 2 9 22 2" />
           </svg>
         </button>
+      </div><div style={{ padding: "6px 14px", background: "#F8FAFB", borderTop: "1px solid #EEF0F4", textAlign: "center" }}>
+        <a href="https://tedzintegrativesystems.com" target="_blank" rel="noopener noreferrer" style={{ color: "#94A3B8", fontSize: 11, textDecoration: "none", fontWeight: 500 }}>
+          Powered by <span style={{ color: "#D4A853", fontWeight: 700 }}>TEDZ</span>
+        </a>
       </div>
     </div>
   );
