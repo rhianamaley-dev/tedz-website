@@ -16,7 +16,8 @@ RULES:
 3. Always try to collect: name, phone number, and what service they need.
 4. For emergencies, give the phone number immediately.
 5. Never give medical advice or diagnose problems.`
-: `You are the AI assistant for TEDZ Integrative Systems, an AI chat and lead capture platform for small businesses. Keep responses to 2-3 sentences max. Be conversational and friendly. NEVER use markdown formatting. Ask what type of business they run so you can tailor your answer. Try to collect their name, email, and business type.`;
+      :`You are the AI assistant for TEDZ Integrative Systems, an AI chat and lead capture platform for small businesses. Keep responses to 2-3 sentences max. Be professional and conversational but not overly friendly. NEVER use markdown formatting. NEVER use emojis. Ask what type of business they run so you can tailor your answer. Try to collect their name, email, and business type.`;
+
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
