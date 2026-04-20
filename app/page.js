@@ -2,30 +2,37 @@
 import { useState, useRef, useEffect } from "react";
 
 /* ────────────────────────────────────────────
-   DEMO CHAT WIDGET
-   In production you'd call your Claude API backend.
-   For now this uses canned responses so the demo works
-   without any backend at all.
+   HELPER: Render message content with clickable booking links
    ──────────────────────────────────────────── */
-
-const DEMO_RESPONSES = [
-  { triggers: ["price", "cost", "how much", "pricing", "quote", "estimate", "charge"], response: "Great question! Pricing depends on your business type and what features you need. Our plans start at $149/month for trades like HVAC and plumbing, and $449/month for healthcare with HIPAA compliance.\n\nWant me to set up a free demo customized for your business? I just need your name and what kind of business you run!" },
-  { triggers: ["how", "work", "what do", "explain", "tell me"], response: "Here's the simple version — we put an AI chat widget on your website that knows everything about YOUR business. It answers customer questions 24/7, captures leads, and sends them straight to your phone.\n\nThe best part? It takes less than an hour to set up. Want to see a live demo for your business?" },
-  { triggers: ["hvac", "plumb", "roof", "contract", "electric", "trade"], response: "We work with a ton of trades businesses! HVAC, plumbing, roofing, electrical, general contractors — you name it.\n\nOne HVAC company we work with caught 12 extra leads in their first month just from after-hours chats. That's over $60K in potential revenue.\n\nWant me to build a free demo for your company?" },
-  { triggers: ["dental", "doctor", "clinic", "health", "medical", "derm", "laser", "patient"], response: "We love working with healthcare businesses! Our healthcare plan includes full HIPAA compliance, insurance verification, and appointment booking.\n\nThe AI never gives medical advice — it just answers the routine questions your front desk gets all day (hours, insurance, booking) so your staff can focus on patients.\n\nWant to see how it'd work for your practice?" },
-  { triggers: ["demo", "try", "test", "see", "show"], response: "Absolutely! Here's how our demo works — I'll pull your website info, load it into the AI, and by tomorrow you'll have a working chat that already knows your services, pricing, and hours.\n\nJust drop your website URL and your name, and I'll get it set up!" },
-  { triggers: ["privacy", "secure", "data", "safe", "hipaa"], response: "Security is our #1 thing. Every client's data is completely isolated — your info never touches another business. We encrypt everything, never use your data to train models for anyone else, and you can delete your data anytime.\n\nFor healthcare clients, we're fully HIPAA compliant with signed BAAs and audit logging." },
-  { triggers: ["hi", "hello", "hey", "sup", "yo", "start", "help"], response: "Hey there! Welcome to TEDZ Integrative Systems!\n\nI'm here to show you how our AI chat widget can capture more leads for your business — 24/7, even while you sleep.\n\nAre you a trades business (HVAC, plumbing, roofing) or in healthcare (dental, clinic, derm)?" },
-  { triggers: ["setup", "install", "hard", "complicated", "technical", "code"], response: "Super easy — it's literally one line of code pasted into your website. Takes about 5 minutes.\n\nWorks on WordPress, Wix, Squarespace, or basically any platform. We handle all the technical stuff. You don't need to be technical at all.\n\nWant me to walk you through it?" },
-];
-
-function getResponse(msg) {
-  const lower = msg.toLowerCase();
-  for (const item of DEMO_RESPONSES) {
-    if (item.triggers.some((t) => lower.includes(t))) return item.response;
-  }
-  return "Thanks for reaching out! I'd love to help you capture more leads with AI.\n\nCould you tell me what kind of business you run? That way I can show you exactly how our chat widget would work for your industry!";
+function renderMessageContent(content) {
+  return content.split(/(https?:\/\/[^\s]+)/g).map((part, idx) => {
+    if (part.match(/^https?:\/\//)) {
+      return (
+        <a
+          key={idx}
+          href={part}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            color: "#B8922E",
+            textDecoration: "underline",
+            fontWeight: 600,
+            display: "inline-block",
+            marginTop: 4,
+          }}
+        >
+          Click here to book →
+        </a>
+      );
+    }
+    return part;
+  });
 }
+
+/* ────────────────────────────────────────────
+   TEDZ CHAT WIDGET
+   Powered by Claude API — real AI responses
+   ──────────────────────────────────────────── */
 
 function ChatWidget({ isOpen, onToggle }) {
   const [messages, setMessages] = useState([
@@ -99,7 +106,9 @@ function ChatWidget({ isOpen, onToggle }) {
       <div className="chat-messages">
         {messages.map((m, i) => (
           <div key={i} className={`msg-row ${m.role}`}>
-            <div className={`msg-bubble ${m.role}`}>{m.content}</div>
+            <div className={`msg-bubble ${m.role}`}>
+              {m.role === "assistant" ? renderMessageContent(m.content) : m.content}
+            </div>
           </div>
         ))}
         {typing && (
@@ -135,7 +144,10 @@ function ChatWidget({ isOpen, onToggle }) {
             <polygon points="22 2 15 22 11 13 2 9 22 2" />
           </svg>
         </button>
-      </div><div style={{ padding: "6px 14px", background: "#F8FAFB", borderTop: "1px solid #EEF0F4", textAlign: "center" }}>
+      </div>
+
+      {/* Powered by TEDZ */}
+      <div style={{ padding: "6px 14px", background: "#F8FAFB", borderTop: "1px solid #EEF0F4", textAlign: "center" }}>
         <a href="https://tedzintegrativesystems.com" target="_blank" rel="noopener noreferrer" style={{ color: "#94A3B8", fontSize: 11, textDecoration: "none", fontWeight: 500 }}>
           Powered by <span style={{ color: "#D4A853", fontWeight: 700 }}>TEDZ</span>
         </a>
@@ -481,9 +493,9 @@ export default function Home() {
 
         <div className="three-col" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20 }}>
           {[
-            { name: "Starter", price: "$149", audience: "Single-location trades", features: ["24/7 AI chat widget", "Lead capture + SMS alerts", "Up to 100 chats/month", "Basic analytics", "Email support"], featured: false },
-            { name: "Professional", price: "$249", audience: "Growing businesses", features: ["Everything in Starter", "Unlimited conversations", "CRM integration", "Custom branding", "Priority support"], featured: true },
-            { name: "Healthcare", price: "$449", audience: "HIPAA compliant", features: ["Full HIPAA compliance", "Signed BAA included", "Insurance verification", "PHI encryption + audit logs", "Dedicated onboarding"], featured: false },
+            { name: "Starter", price: "$199", audience: "Lead capture only", features: ["24/7 AI chat widget", "Lead capture + SMS alerts", "Up to 100 chats/month", "Basic analytics", "Email support"], featured: false },
+            { name: "Professional", price: "$349", audience: "Growing businesses", features: ["Everything in Starter", "Cal.com booking included", "AI books appointments", "Unlimited conversations", "Priority support"], featured: true },
+            { name: "Premium", price: "$499", audience: "Scaling businesses", features: ["Everything in Professional", "Zapier CRM sync", "Custom branding", "Monthly strategy call", "Dedicated support"], featured: false },
           ].map((plan, i) => (
             <div key={i} className="card" style={{
               position: "relative",
