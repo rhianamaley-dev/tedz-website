@@ -441,10 +441,55 @@ export default function Home() {
         }
       `}</style>
 
+      {/* ===== TOP UTILITY BAR (Apple-style ease-of-access strip) ===== */}
+      <div style={{
+        position: "sticky", top: 0, zIndex: 101,
+        background: "#1B2C5C",
+        borderBottom: "1px solid rgba(245,184,46,0.2)",
+        padding: "8px 36px",
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        fontSize: 13, color: "#C8CDD5",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 24, flexWrap: "wrap" }}>
+          <a
+            href="mailto:rhiana@tedzintegrativesystems.com"
+            style={{ display: "flex", alignItems: "center", gap: 6, color: "#C8CDD5", transition: "color 0.2s" }}
+            onMouseEnter={(e) => e.currentTarget.style.color = "#F5B82E"}
+            onMouseLeave={(e) => e.currentTarget.style.color = "#C8CDD5"}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            Email Us
+          </a>
+          <span style={{ display: "flex", alignItems: "center", gap: 6, color: "#94A3B8" }}>
+            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#4ADE80", boxShadow: "0 0 6px rgba(74,222,128,0.5)" }} />
+            Available now
+          </span>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <a href="#how" style={{ color: "#94A3B8", fontSize: 12, fontWeight: 500 }}>How It Works</a>
+          <button
+            onClick={() => setChatOpen(true)}
+            style={{
+              background: "transparent", border: "1px solid #F5B82E",
+              color: "#F5B82E", padding: "4px 12px", borderRadius: 6,
+              fontSize: 12, fontWeight: 600, cursor: "pointer", fontFamily: "'Outfit', sans-serif",
+              transition: "all 0.2s",
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = "#F5B82E"; e.currentTarget.style.color = "#1B2C5C"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#F5B82E"; }}
+          >
+            Talk to Jordan
+          </button>
+        </div>
+      </div>
+
       {/* ===== NAV ===== */}
       <nav style={{
         display: "flex", alignItems: "center", justifyContent: "space-between",
-        padding: "18px 36px", position: "sticky", top: 0, zIndex: 100,
+        padding: "18px 36px", position: "sticky", top: 36, zIndex: 100,
         background: "rgba(13,13,26,0.92)", backdropFilter: "blur(16px)",
         borderBottom: "1px solid rgba(255,255,255,0.04)",
       }}>
@@ -693,7 +738,21 @@ export default function Home() {
           </div>
           <span style={{ color: "#4A5060", fontSize: 13 }}>© 2026 TEDZ Integrative Systems LLC. All rights reserved.</span>
         </div>
-        <div style={{ color: "#4A5060", fontSize: 13 }}>Privacy-first AI for small business.</div>
+        <div style={{ display: "flex", alignItems: "center", gap: 20, flexWrap: "wrap" }}>
+          <a
+            href="mailto:rhiana@tedzintegrativesystems.com"
+            style={{ display: "flex", alignItems: "center", gap: 6, color: "#94A3B8", fontSize: 13, fontWeight: 500, transition: "color 0.2s" }}
+            onMouseEnter={(e) => e.currentTarget.style.color = "#F5B82E"}
+            onMouseLeave={(e) => e.currentTarget.style.color = "#94A3B8"}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            Email Us
+          </a>
+          <span style={{ color: "#4A5060", fontSize: 13 }}>Privacy-first AI for small business.</span>
+        </div>
       </footer>
 
       {/* ===== CHAT WIDGET ===== */}
