@@ -97,6 +97,8 @@ function ChatWidget({ isOpen, onToggle }) {
   const [typing, setTyping] = useState(false);
   // Quick replies are shown until the user sends their first message
   const [quickReplies, setQuickReplies] = useState(STARTER_QUICK_REPLIES);
+  // Tracks whether the lead alert email has already been fired for this conversation
+  const [leadAlertSent, setLeadAlertSent] = useState(false);
   const endRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -122,10 +124,13 @@ function ChatWidget({ isOpen, onToggle }) {
         body: JSON.stringify({
           message: msg,
           history: messages.slice(1).map(m => ({ role: m.role, content: m.content })),
+          leadAlertSent,
         }),
       });
       const data = await res.json();
       setTyping(false);
+      // Update lead alert flag if the server fired the alert
+      if (data.leadAlertSent) setLeadAlertSent(true);
       setMessages((p) => [...p, { role: "assistant", content: data.reply || "Sorry, something went wrong. Please try again." }]);
     } catch (error) {
       setTyping(false);
