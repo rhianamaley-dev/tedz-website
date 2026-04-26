@@ -2,6 +2,67 @@
 import { useState, useRef, useEffect } from "react";
 
 /* ────────────────────────────────────────────
+   ASSISTANT IDENTITY — easy to change in one place
+   ──────────────────────────────────────────── */
+const ASSISTANT = {
+  name: "Jordan",                         // <- change name here
+  role: "AI Assistant",                   // keep AI disclosure for legal/ethical compliance
+  greeting:
+    "Hi, I'm Jordan — the AI assistant for TEDZ Integrative Systems. I'm here to help you capture more leads 24/7.\n\nBefore we get started, what's your name and the best phone number to reach you?",
+};
+
+/* ────────────────────────────────────────────
+   ILLUSTRATED AVATAR — friendly stylized SVG
+   Side-steps the right-of-publicity / impersonation issues
+   that come with using a real person's photo.
+   ──────────────────────────────────────────── */
+function AssistantAvatar({ size = 44 }) {
+  return (
+    <div
+      style={{
+        width: size,
+        height: size,
+        borderRadius: "50%",
+        overflow: "hidden",
+        flexShrink: 0,
+        background: "linear-gradient(145deg, #D4A853, #B8922E)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <svg viewBox="0 0 64 64" width={size} height={size} xmlns="http://www.w3.org/2000/svg">
+        {/* warm background */}
+        <circle cx="32" cy="32" r="32" fill="#F5DEB3" />
+        {/* hair back */}
+        <path d="M14 30 Q14 14 32 14 Q50 14 50 30 L50 38 Q48 32 44 32 L20 32 Q16 32 14 38 Z" fill="#3E2A1F"/>
+        {/* face */}
+        <ellipse cx="32" cy="36" rx="13" ry="15" fill="#E8C39E"/>
+        {/* hair front bangs */}
+        <path d="M19 26 Q24 22 32 22 Q40 22 45 26 Q42 28 38 27 Q35 30 32 28 Q29 30 26 27 Q22 28 19 26 Z" fill="#3E2A1F"/>
+        {/* eyes */}
+        <ellipse cx="27" cy="36" rx="1.4" ry="1.8" fill="#1A1A2E"/>
+        <ellipse cx="37" cy="36" rx="1.4" ry="1.8" fill="#1A1A2E"/>
+        {/* eye highlights */}
+        <circle cx="27.4" cy="35.5" r="0.5" fill="#fff"/>
+        <circle cx="37.4" cy="35.5" r="0.5" fill="#fff"/>
+        {/* eyebrows */}
+        <path d="M24 33 Q27 32 30 33" stroke="#3E2A1F" strokeWidth="1.2" strokeLinecap="round" fill="none"/>
+        <path d="M34 33 Q37 32 40 33" stroke="#3E2A1F" strokeWidth="1.2" strokeLinecap="round" fill="none"/>
+        {/* nose hint */}
+        <path d="M32 39 L31 42 L33 42" stroke="#C4936B" strokeWidth="0.8" strokeLinecap="round" fill="none"/>
+        {/* friendly smile */}
+        <path d="M28 45 Q32 48 36 45" stroke="#8B4A38" strokeWidth="1.4" strokeLinecap="round" fill="none"/>
+        {/* shoulders / shirt suggestion */}
+        <path d="M14 64 Q14 52 24 50 Q28 54 32 54 Q36 54 40 50 Q50 52 50 64 Z" fill="#1A1A2E"/>
+        {/* subtle collar */}
+        <path d="M28 53 L32 56 L36 53" stroke="#fff" strokeWidth="0.8" fill="none" opacity="0.5"/>
+      </svg>
+    </div>
+  );
+}
+
+/* ────────────────────────────────────────────
    HELPER: Render message content with clickable booking links
    ──────────────────────────────────────────── */
 function renderMessageContent(content) {
@@ -38,8 +99,7 @@ function ChatWidget({ isOpen, onToggle }) {
   const [messages, setMessages] = useState([
     {
       role: "assistant",
-      content:
-        "Hey! I'm the AI assistant for TEDZ Integrative Systems. I can show you how we help businesses capture more leads 24/7.\n\nWhat kind of business do you run?",
+      content: ASSISTANT.greeting,
     },
   ]);
   const [input, setInput] = useState("");
@@ -84,6 +144,7 @@ function ChatWidget({ isOpen, onToggle }) {
       <button
         onClick={onToggle}
         className="chat-fab"
+        aria-label={`Open chat with ${ASSISTANT.name}`}
       >
         <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
@@ -93,23 +154,30 @@ function ChatWidget({ isOpen, onToggle }) {
 
   return (
     <div className="chat-window">
-      {/* Header */}
+      {/* Header — Avatar + Name + AI disclosure */}
       <div className="chat-header">
-        <div className="chat-avatar">T</div>
-        <div style={{ flex: 1 }}>
-          <div style={{ color: "#fff", fontWeight: 700, fontSize: 15 }}>TEDZ Integrative Systems</div>
-          <div style={{ color: "#D4A853", fontSize: 12, display: "flex", alignItems: "center", gap: 6 }}>
+        <AssistantAvatar size={44} />
+        <div style={{ flex: 1, marginLeft: 12 }}>
+          <div style={{ color: "#fff", fontWeight: 700, fontSize: 15, display: "flex", alignItems: "center", gap: 8 }}>
+            {ASSISTANT.name}
             <span className="online-dot" />
-            Online — replies instantly
+          </div>
+          <div style={{ color: "#D4A853", fontSize: 12 }}>
+            {ASSISTANT.role} · TEDZ Integrative Systems
           </div>
         </div>
-        <button onClick={onToggle} className="chat-close">×</button>
+        <button onClick={onToggle} className="chat-close" aria-label="Close chat">×</button>
       </div>
 
       {/* Messages */}
       <div className="chat-messages">
         {messages.map((m, i) => (
           <div key={i} className={`msg-row ${m.role}`}>
+            {m.role === "assistant" && (
+              <div style={{ marginRight: 8, alignSelf: "flex-end" }}>
+                <AssistantAvatar size={28} />
+              </div>
+            )}
             <div className={`msg-bubble ${m.role}`}>
               {m.role === "assistant" ? renderMessageContent(m.content) : m.content}
             </div>
@@ -117,6 +185,9 @@ function ChatWidget({ isOpen, onToggle }) {
         ))}
         {typing && (
           <div className="msg-row assistant">
+            <div style={{ marginRight: 8, alignSelf: "flex-end" }}>
+              <AssistantAvatar size={28} />
+            </div>
             <div className="msg-bubble assistant" style={{ display: "flex", gap: 5, padding: "12px 20px" }}>
               <span className="dot" style={{ animationDelay: "0s" }} />
               <span className="dot" style={{ animationDelay: "0.15s" }} />
@@ -139,10 +210,10 @@ function ChatWidget({ isOpen, onToggle }) {
               send();
             }
           }}
-          placeholder="Ask about our AI chat service..."
+          placeholder={`Message ${ASSISTANT.name}...`}
           className="chat-input"
         />
-        <button onClick={send} className={`chat-send ${input.trim() ? "active" : ""}`}>
+        <button onClick={send} className={`chat-send ${input.trim() ? "active" : ""}`} aria-label="Send message">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={input.trim() ? "#fff" : "#A0A8B4"} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <line x1="22" y1="2" x2="11" y2="13" />
             <polygon points="22 2 15 22 11 13 2 9 22 2" />
@@ -207,30 +278,24 @@ export default function Home() {
 
         .chat-header {
           background: linear-gradient(135deg, #1A1A2E, #16213E);
-          padding: 18px 20px; display: flex; align-items: center; gap: 14;
-        }
-        .chat-avatar {
-          width: 44px; height: 44px; border-radius: 14px;
-          background: linear-gradient(145deg, #D4A853, #B8922E);
-          display: flex; align-items: center; justify-content: center;
-          font-size: 20px; font-weight: 900; color: #fff; flex-shrink: 0;
+          padding: 18px 20px; display: flex; align-items: center;
         }
         .online-dot {
           width: 7px; height: 7px; border-radius: 50%; background: #4ADE80;
           display: inline-block; box-shadow: 0 0 6px rgba(74,222,128,0.5);
         }
         .chat-close {
-          background: none; border: none; color: #64748B; cursor: pointer;
+          background: none; border: none; color: #94A3B8; cursor: pointer;
           font-size: 26px; padding: 4px; line-height: 1; transition: color 0.2s;
         }
         .chat-close:hover { color: #fff; }
 
         .chat-messages { flex: 1; overflow-y: auto; padding: 18px 16px 8px; background: #F8FAFC; }
-        .msg-row { display: flex; margin-bottom: 14px; }
+        .msg-row { display: flex; margin-bottom: 14px; align-items: flex-end; }
         .msg-row.user { justify-content: flex-end; }
         .msg-row.assistant { justify-content: flex-start; }
         .msg-bubble {
-          max-width: 82%; padding: 11px 15px; border-radius: 16px;
+          max-width: 78%; padding: 11px 15px; border-radius: 16px;
           font-size: 14px; line-height: 1.55; white-space: pre-line;
         }
         .msg-bubble.user {
@@ -390,12 +455,16 @@ export default function Home() {
             <a href="#how" className="btn-secondary">See How It Works →</a>
           </div>
 
+          {/* === STATS BAR — Updated ===
+              Replaced "< 1¢ per conversation" → "Trained" / "On your business"
+              Replaced "10x ROI first month" → "Every" / "lead captured"
+              Honest framing — implies the goal without making an absolute promise. */}
           <div className="trust-bar" style={{ marginTop: 60, display: "flex", justifyContent: "center", gap: 40, flexWrap: "wrap" }}>
             {[
-              { num: "< 1¢", label: "per conversation" },
               { num: "24/7", label: "always online" },
               { num: "< 1 hr", label: "setup time" },
-              { num: "10x", label: "ROI first month" },
+              { num: "Trained", label: "on your business" },
+              { num: "Every", label: "lead captured" },
             ].map((s, i) => (
               <div key={i} style={{ textAlign: "center" }}>
                 <div style={{ fontSize: 28, fontWeight: 800, color: "#D4A853" }}>{s.num}</div>
