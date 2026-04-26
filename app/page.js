@@ -505,8 +505,8 @@ export default function Home() {
             {[
               { num: "24/7", label: "always online" },
               { num: "< 1 hr", label: "setup time" },
-              { num: "Trained", label: "on your business" },
-              { num: "Every", label: "lead captured" },
+              { num: "100%", label: "tailored to you" },
+              { num: "2 sec", label: "average response" },
             ].map((s, i) => (
               <div key={i} style={{ textAlign: "center" }}>
                 <div style={{ fontSize: 28, fontWeight: 800, color: "#F5B82E" }}>{s.num}</div>
