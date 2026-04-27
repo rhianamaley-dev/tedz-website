@@ -1,24 +1,43 @@
 import { NextResponse } from "next/server";
 
 /* ────────────────────────────────────────────
-   LEAD DETECTION + EMAIL ALERT
-   When the conversation contains a name, phone, and business type,
-   we send an email alert to the team. Detection runs on every reply
-   but the alert only fires ONCE per conversation (tracked by a flag
-   the frontend sends back).
+   TWO-STAGE LEAD ALERT SYSTEM
+   
+   STAGE 1 — IMMEDIATE ALERT
+   Fires the moment name + phone are captured.
+   Subject: "[NEW LEAD] Name (Phone)"
+   Purpose: act fast, call them back NOW.
+   
+   STAGE 2 — FINAL TRANSCRIPT
+   Fires when the conversation appears finished:
+     - Visitor has been idle for 2+ minutes (frontend detects, sends "finalize" signal)
+     - Visitor says goodbye/thanks/done (server-side keyword detection)
+     - Conversation reaches 8+ total messages
+   Subject: "[FINAL] Name (Business) - Full transcript"
+   Purpose: complete record with context for follow-up.
+   
+   Each stage fires only ONCE per conversation, tracked by flags from the frontend.
    ──────────────────────────────────────────── */
 
-// Where lead alerts get sent. Update this to your real address.
-const ALERT_TO_EMAIL = process.env.LEAD_ALERT_EMAIL || "rhianamaley@tedzintegrativesystems.com";
-// Who the alert appears to come from. Must be a domain you've verified in Resend.
-// During testing you can use "onboarding@resend.dev" which works without verification.
+// Recipients — supports comma-separated env var or hardcoded fallback
+const ALERT_TO_EMAIL = process.env.LEAD_ALERT_EMAIL
+  ? process.env.LEAD_ALERT_EMAIL.split(",").map(e => e.trim())
+  : [
+      "rhiana@tedzintegrativesystems.com",
+      "christian@tedzintegrativesystems.com",
+    ];
 const ALERT_FROM_EMAIL = process.env.LEAD_ALERT_FROM || "leads@tedzintegrativesystems.com";
 
-/* Try to extract a phone number from text.
-   Handles formats like 4695044724, 469-504-4724, (469) 504-4724, +1 469 504 4724 */
+/* Trigger thresholds */
+const FINAL_EMAIL_MESSAGE_COUNT_THRESHOLD = 8;
+// Frontend detects idle (2+ min) and sends a finalize signal — see page.js
+
+/* ────────────────────────────────────────────
+   EXTRACTORS
+   ──────────────────────────────────────────── */
+
 function extractPhone(text) {
   const cleaned = text.replace(/[^\d+]/g, "");
-  // 10 or 11 digits is a US phone number
   const match = cleaned.match(/(\+?1)?(\d{10})/);
   if (match) {
     const digits = match[2];
@@ -27,20 +46,16 @@ function extractPhone(text) {
   return null;
 }
 
-/* Try to extract a name from text.
-   Looks at short messages or common patterns like "I'm X" or "name is X" */
 function extractName(text) {
-  // Common patterns
   const patterns = [
     /(?:my name is|i'?m|i am|this is|it'?s)\s+([A-Za-z][A-Za-z\s'-]{0,30})/i,
-    /^([A-Za-z][A-Za-z'-]{1,20})(?:\s|$|,)/,  // first word looks like a name
+    /^([A-Za-z][A-Za-z'-]{1,20})(?:\s|$|,)/,
   ];
   for (const p of patterns) {
     const m = text.match(p);
     if (m && m[1]) {
       const name = m[1].trim();
-      // Filter out common false positives
-      if (!/^(yes|no|hi|hey|hello|ok|okay|sure|thanks|hvac|need|want)$/i.test(name)) {
+      if (!/^(yes|no|hi|hey|hello|ok|okay|sure|thanks|hvac|need|want|how|what|when|where|why|who)$/i.test(name)) {
         return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
       }
     }
@@ -48,12 +63,11 @@ function extractName(text) {
   return null;
 }
 
-/* Mine the entire conversation for the lead's name, phone, and business type. */
 function extractLeadInfo(history, currentMessage) {
   const userMessages = [
     ...(history || []).filter(m => m.role === "user").map(m => m.content),
     currentMessage,
-  ];
+  ].filter(Boolean);
 
   let phone = null;
   let name = null;
@@ -64,20 +78,13 @@ function extractLeadInfo(history, currentMessage) {
     if (!name) name = extractName(msg);
   }
 
-  // Business type is harder, the model usually asks for it directly,
-  // so the user's reply right after that question is the business.
-  // We look for short replies that aren't the name/phone message.
+  // Business type: short reply that isn't the contact info or first message
   for (let i = 0; i < userMessages.length; i++) {
     const msg = userMessages[i];
-    // Skip if it contains a phone (likely the contact info reply)
     if (extractPhone(msg)) continue;
-    // Skip very long messages (probably a question, not an answer)
     if (msg.length > 60) continue;
-    // Skip the first message (greeting response)
     if (i === 0) continue;
-    // Skip if it's just the name
     if (name && msg.trim().toLowerCase() === name.toLowerCase()) continue;
-    // This is probably the business type answer
     if (msg.length > 1 && msg.length < 60) {
       business = msg.trim();
       break;
@@ -87,44 +94,107 @@ function extractLeadInfo(history, currentMessage) {
   return { name, phone, business };
 }
 
-/* Send the lead alert via Resend. */
-async function sendLeadAlert(lead, fullConversation) {
-  if (!process.env.RESEND_API_KEY) {
-    console.warn("RESEND_API_KEY not set, skipping email alert");
-    return;
-  }
+/* Detect "goodbye / thanks / done" intent in user message */
+function looksLikeFarewell(text) {
+  if (!text) return false;
+  const t = text.toLowerCase().trim();
+  // Direct farewells
+  const farewells = [
+    /^bye\b/, /^goodbye\b/, /^see ya\b/, /^see you\b/,
+    /^thanks?(\s+(so|a))?\s*much/, /^thank you\b/, /^ty\b/,
+    /^(that'?s|thats)\s+(all|it)\b/,
+    /^(i'?m|im)\s+(good|done|set|all set)\b/,
+    /^all set\b/, /^got it\b/, /^perfect\b/,
+    /^talk (later|soon)/, /^later\b/, /^cya\b/,
+    /^have a (good|great|nice)/, /^you too\b/,
+  ];
+  return farewells.some(p => p.test(t));
+}
 
-  const conversationHtml = fullConversation
+/* ────────────────────────────────────────────
+   EMAIL TEMPLATES
+   ──────────────────────────────────────────── */
+
+function buildConversationHtml(messages) {
+  return messages
     .map(m => {
       const role = m.role === "user" ? "Visitor" : "Jordan";
       const color = m.role === "user" ? "#1B2C5C" : "#64748B";
       return `<div style="margin-bottom:12px;"><strong style="color:${color}">${role}:</strong> ${m.content.replace(/\n/g, "<br>")}</div>`;
     })
     .join("");
+}
 
-  const html = `
+function buildEmailHtml({ headerLabel, headerColor, lead, messages, footerNote }) {
+  return `
     <div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:600px;margin:0 auto;padding:24px;">
-      <div style="background:#1B2C5C;color:#F5B82E;padding:20px;border-radius:12px 12px 0 0;">
-        <h1 style="margin:0;font-size:22px;">New Lead from TEDZ Chat</h1>
+      <div style="background:${headerColor};color:#F5B82E;padding:20px;border-radius:12px 12px 0 0;">
+        <div style="font-size:11px;letter-spacing:0.15em;font-weight:700;opacity:0.9;margin-bottom:4px;">${headerLabel}</div>
+        <h1 style="margin:0;font-size:22px;color:#F5B82E;">${lead.name || "Unknown lead"}</h1>
       </div>
       <div style="background:#FAF7F0;padding:24px;border-radius:0 0 12px 12px;border:1px solid #E8ECF0;border-top:none;">
         <table style="width:100%;border-collapse:collapse;">
           <tr><td style="padding:8px 0;color:#64748B;width:120px;">Name</td><td style="padding:8px 0;font-weight:700;color:#1B2C5C;">${lead.name || "(not captured)"}</td></tr>
           <tr><td style="padding:8px 0;color:#64748B;">Phone</td><td style="padding:8px 0;font-weight:700;color:#1B2C5C;">${lead.phone || "(not captured)"}</td></tr>
-          <tr><td style="padding:8px 0;color:#64748B;">Business</td><td style="padding:8px 0;font-weight:700;color:#1B2C5C;">${lead.business || "(not captured)"}</td></tr>
+          <tr><td style="padding:8px 0;color:#64748B;">Business</td><td style="padding:8px 0;font-weight:700;color:#1B2C5C;">${lead.business || "(not captured yet)"}</td></tr>
           <tr><td style="padding:8px 0;color:#64748B;">Captured</td><td style="padding:8px 0;color:#1B2C5C;">${new Date().toLocaleString("en-US", { timeZone: "America/Chicago" })} CT</td></tr>
         </table>
-        <h2 style="margin:24px 0 12px;font-size:16px;color:#1B2C5C;">Full conversation</h2>
+        <h2 style="margin:24px 0 12px;font-size:16px;color:#1B2C5C;">Full conversation (${messages.length} messages)</h2>
         <div style="background:#fff;padding:16px;border-radius:8px;border:1px solid #E8ECF0;font-size:14px;line-height:1.6;">
-          ${conversationHtml}
+          ${buildConversationHtml(messages)}
         </div>
+        ${footerNote ? `<div style="margin-top:16px;padding:12px;background:#FFF8E7;border-left:3px solid #F5B82E;border-radius:6px;font-size:13px;color:#1B2C5C;">${footerNote}</div>` : ""}
         <div style="margin-top:24px;padding-top:16px;border-top:1px solid #E8ECF0;color:#94A3B8;font-size:12px;">
           Sent automatically by Jordan, your TEDZ AI assistant.
         </div>
       </div>
     </div>
   `;
+}
 
+/* ────────────────────────────────────────────
+   SEND FUNCTIONS
+   ──────────────────────────────────────────── */
+
+async function sendImmediateAlert(lead, messages) {
+  if (!process.env.RESEND_API_KEY) {
+    console.warn("RESEND_API_KEY not set, skipping immediate alert");
+    return;
+  }
+  const html = buildEmailHtml({
+    headerLabel: "NEW LEAD — CALL ASAP",
+    headerColor: "#1B2C5C",
+    lead,
+    messages,
+    footerNote: "This lead was just captured. The conversation may continue, you'll receive a final transcript when it ends.",
+  });
+  const subject = `[NEW LEAD] ${lead.name || "Unknown"}${lead.phone ? ` (${lead.phone})` : ""}`;
+  await sendEmail(subject, html, "immediate");
+}
+
+async function sendFinalTranscript(lead, messages, reason) {
+  if (!process.env.RESEND_API_KEY) {
+    console.warn("RESEND_API_KEY not set, skipping final transcript");
+    return;
+  }
+  const reasonText = {
+    farewell: "Visitor said goodbye or thank you.",
+    idle: "Visitor was idle for over 2 minutes.",
+    threshold: `Conversation reached ${FINAL_EMAIL_MESSAGE_COUNT_THRESHOLD}+ messages.`,
+  }[reason] || "Conversation completed.";
+
+  const html = buildEmailHtml({
+    headerLabel: "FINAL TRANSCRIPT",
+    headerColor: "#243A78",
+    lead,
+    messages,
+    footerNote: `Conversation finalized: ${reasonText}`,
+  });
+  const subject = `[FINAL] ${lead.name || "Unknown"}${lead.business ? ` (${lead.business})` : ""}`;
+  await sendEmail(subject, html, "final");
+}
+
+async function sendEmail(subject, html, tag) {
   try {
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -135,25 +205,55 @@ async function sendLeadAlert(lead, fullConversation) {
       body: JSON.stringify({
         from: ALERT_FROM_EMAIL,
         to: ALERT_TO_EMAIL,
-        subject: `New TEDZ Lead: ${lead.name || "Unknown"}${lead.business ? ` (${lead.business})` : ""}`,
+        subject,
         html,
+        tags: [{ name: "stage", value: tag }],
       }),
     });
     if (!res.ok) {
-      console.error("Resend error:", await res.text());
+      console.error(`Resend ${tag} error:`, await res.text());
     } else {
-      console.log("Lead alert sent for:", lead.name);
+      console.log(`${tag} alert sent:`, subject);
     }
   } catch (err) {
-    console.error("Failed to send lead alert:", err);
+    console.error(`Failed to send ${tag} alert:`, err);
   }
 }
 
+/* ────────────────────────────────────────────
+   MAIN HANDLER
+   ──────────────────────────────────────────── */
 
 export async function POST(request) {
   try {
-    const { message, businessInfo, history, leadAlertSent } = await request.json();
+    const {
+      message,
+      businessInfo,
+      history,
+      leadAlertSent,        // immediate-alert flag from frontend
+      finalTranscriptSent,  // final-transcript flag from frontend
+      finalize,             // signal from frontend that idle timer fired
+    } = await request.json();
 
+    const userMessages = (history || []).filter(m => m.role === "user");
+    const totalMessageCount = (history || []).length + (message ? 1 : 0);
+
+    // ────────────────────────────────────────────
+    // FINALIZE-ONLY REQUEST (no chat reply needed)
+    // Frontend sends this when the idle timer fires.
+    // ────────────────────────────────────────────
+    if (finalize === true && !finalTranscriptSent && !businessInfo) {
+      const lead = extractLeadInfo(history, "");
+      if (lead.name && lead.phone) {
+        await sendFinalTranscript(lead, history || [], "idle");
+        return NextResponse.json({ finalTranscriptSent: true });
+      }
+      return NextResponse.json({ finalTranscriptSent: false });
+    }
+
+    // ────────────────────────────────────────────
+    // SYSTEM PROMPT
+    // ────────────────────────────────────────────
     const systemPrompt = businessInfo
       ? `You are Jordan, the AI chat assistant for ${businessInfo.name}. ${businessInfo.prompt || ""}
       
@@ -169,7 +269,7 @@ RULES:
 6. For emergencies, give the phone number immediately.
 7. Never give medical advice or diagnose problems.
 8. NEVER use markdown formatting like **, ##, or bullet symbols. NEVER use emojis. Write in plain text only.
-9. When a customer wants to book an appointment and you have their name and phone number, Offer the booking link as an option for sooner: https://cal.com/tedz-integrative-systems/service-appointment and tell them to pick a time.`
+9. When a customer wants to book an appointment and you have their name and phone number, give them this link: https://cal.com/tedz-integrative-systems/service-appointment and tell them to pick a time.`
       : `You are Jordan, the AI assistant for TEDZ Integrative Systems, an AI chat and lead capture platform for small businesses.
 
 CONVERSATION STAGES:
@@ -202,6 +302,9 @@ GENERAL RULES:
 7. Once name and phone are captured, NEVER re-ask. Do not ask for a "full name", "last name", or any other variation if they've already given you a name.
 8. If they get hesitant about giving their phone, say it's just so the team can follow up, and assure them you won't share it.`;
 
+    // ────────────────────────────────────────────
+    // CALL CLAUDE API
+    // ────────────────────────────────────────────
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
@@ -229,30 +332,61 @@ GENERAL RULES:
     const data = await response.json();
     let reply = data.content[0].text;
 
-    // Strip dashes
+    // Dash stripper
     reply = reply
       .replace(/\s+[—–]\s+/g, ". ")
       .replace(/[—–]/g, ",")
       .replace(/\s+-\s+/g, ". ");
 
-    // Lead detection and email alert
-    // Only check on the TEDZ-side bot (not customer business bots), and only if alert hasn't fired
+    // ────────────────────────────────────────────
+    // EMAIL TRIGGERING (only on TEDZ-side bot)
+    // ────────────────────────────────────────────
     let alertJustSent = false;
-    if (!businessInfo && !leadAlertSent) {
+    let finalJustSent = false;
+
+    if (!businessInfo) {
       const lead = extractLeadInfo(history, message);
-      if (lead.name && lead.phone) {
-        const fullConv = [
-          ...(history || []),
-          { role: "user", content: message },
-          { role: "assistant", content: reply },
-        ];
-        // Fire and forget, don't block the response
-        sendLeadAlert(lead, fullConv).catch(err => console.error("Alert failed:", err));
+      const fullConv = [
+        ...(history || []),
+        { role: "user", content: message },
+        { role: "assistant", content: reply },
+      ];
+
+      // STAGE 1: Immediate alert when name + phone captured
+      if (!leadAlertSent && lead.name && lead.phone) {
+        sendImmediateAlert(lead, fullConv).catch(err => console.error("Immediate alert failed:", err));
         alertJustSent = true;
+      }
+
+      // STAGE 2: Final transcript triggers
+      // Only fire if we have at least name+phone (otherwise nothing useful to send)
+      // and we've already sent the immediate alert (or we're sending it now)
+      if (!finalTranscriptSent && (leadAlertSent || alertJustSent) && lead.name && lead.phone) {
+        let triggerReason = null;
+
+        // Trigger A: visitor said goodbye/thanks
+        if (looksLikeFarewell(message)) {
+          triggerReason = "farewell";
+        }
+        // Trigger B: conversation hit message threshold
+        else if (fullConv.length >= FINAL_EMAIL_MESSAGE_COUNT_THRESHOLD) {
+          triggerReason = "threshold";
+        }
+
+        if (triggerReason) {
+          sendFinalTranscript(lead, fullConv, triggerReason).catch(err =>
+            console.error("Final transcript failed:", err)
+          );
+          finalJustSent = true;
+        }
       }
     }
 
-    return NextResponse.json({ reply, leadAlertSent: leadAlertSent || alertJustSent });
+    return NextResponse.json({
+      reply,
+      leadAlertSent: leadAlertSent || alertJustSent,
+      finalTranscriptSent: finalTranscriptSent || finalJustSent,
+    });
   } catch (error) {
     console.error("Chat error:", error);
     return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
