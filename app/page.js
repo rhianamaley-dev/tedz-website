@@ -99,14 +99,63 @@ function ChatWidget({ isOpen, onToggle }) {
   const [quickReplies, setQuickReplies] = useState(STARTER_QUICK_REPLIES);
   // Tracks whether the lead alert email has already been fired for this conversation
   const [leadAlertSent, setLeadAlertSent] = useState(false);
+  // Tracks whether the final transcript email has been sent
+  const [finalTranscriptSent, setFinalTranscriptSent] = useState(false);
   const endRef = useRef(null);
   const inputRef = useRef(null);
+  // Idle timer ref (fires final transcript after 2 min of inactivity)
+  const idleTimerRef = useRef(null);
+  // Refs to read the latest values inside the idle callback (state inside setTimeout is stale)
+  const messagesRef = useRef(messages);
+  const leadAlertSentRef = useRef(leadAlertSent);
+  const finalTranscriptSentRef = useRef(finalTranscriptSent);
+  useEffect(() => { messagesRef.current = messages; }, [messages]);
+  useEffect(() => { leadAlertSentRef.current = leadAlertSent; }, [leadAlertSent]);
+  useEffect(() => { finalTranscriptSentRef.current = finalTranscriptSent; }, [finalTranscriptSent]);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, typing]);
   useEffect(() => {
     if (isOpen) setTimeout(() => inputRef.current?.focus(), 100);
+  }, [isOpen]);
+
+  // Reset the 2-minute idle timer. Called every time the visitor sends a message.
+  // After 2 minutes of no activity, fires a "finalize" signal to the API
+  // which sends the final transcript email.
+  const resetIdleTimer = () => {
+    if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    idleTimerRef.current = setTimeout(async () => {
+      // Only fire if we have a lead and haven't sent the final yet
+      if (!leadAlertSentRef.current || finalTranscriptSentRef.current) return;
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            finalize: true,
+            history: messagesRef.current.slice(1).map(m => ({ role: m.role, content: m.content })),
+            leadAlertSent: leadAlertSentRef.current,
+            finalTranscriptSent: finalTranscriptSentRef.current,
+          }),
+        });
+        const data = await res.json();
+        if (data.finalTranscriptSent) setFinalTranscriptSent(true);
+      } catch (err) {
+        console.error("Idle finalize failed:", err);
+      }
+    }, 120000); // 2 minutes
+  };
+
+  // Clear the idle timer when the chat closes
+  useEffect(() => {
+    if (!isOpen && idleTimerRef.current) {
+      clearTimeout(idleTimerRef.current);
+      idleTimerRef.current = null;
+    }
+    return () => {
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    };
   }, [isOpen]);
 
   const sendMessage = async (overrideText) => {
@@ -125,13 +174,17 @@ function ChatWidget({ isOpen, onToggle }) {
           message: msg,
           history: messages.slice(1).map(m => ({ role: m.role, content: m.content })),
           leadAlertSent,
+          finalTranscriptSent,
         }),
       });
       const data = await res.json();
       setTyping(false);
-      // Update lead alert flag if the server fired the alert
+      // Update flags from server response
       if (data.leadAlertSent) setLeadAlertSent(true);
+      if (data.finalTranscriptSent) setFinalTranscriptSent(true);
       setMessages((p) => [...p, { role: "assistant", content: data.reply || "Sorry, something went wrong. Please try again." }]);
+      // Reset the 2-min idle timer after each visitor message
+      resetIdleTimer();
     } catch (error) {
       setTyping(false);
       setMessages((p) => [...p, { role: "assistant", content: "Sorry, I'm having trouble connecting. Please try again in a moment." }]);
@@ -693,7 +746,7 @@ export default function Home() {
               </svg>
               Start the Conversation
             </button>
-            <a href="https://cal.com/rhiana-maley-zd0c7u/service-appointment" target="_blank" rel="noopener noreferrer" className="btn-secondary">
+            <a href="https://cal.com/tedz-integrative-systems/service-appointment" target="_blank" rel="noopener noreferrer" className="btn-secondary">
               Book a 15-min Call
             </a>
           </div>
