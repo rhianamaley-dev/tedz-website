@@ -402,7 +402,7 @@ export default function Home() {
         .tdz-plan-btn-feat      { display:block; width:100%; padding:14px 28px; font-weight:700; font-size:13px; letter-spacing:1px; text-transform:uppercase; border:2px solid #0a0a0a; color:#0a0a0a; background:transparent; cursor:pointer; font-family:'DM Sans',sans-serif; white-space:nowrap; transition:all 0.2s; }
         .tdz-plan-btn-feat:hover { background:#0a0a0a; color:#ff5c1a; }
 
-        .tdz-niche-tag   { padding:10px 20px; border:1px solid rgba(255,92,26,0.3); font-family:'DM Mono',monospace; font-size:12px; letter-spacing:1px; color:#9ca3af; background:rgba(255,92,26,0.04); transition:all 0.2s; cursor:default; }
+        .tdz-niche-tag   { padding:10px 20px; border:1px solid rgba(255,92,26,0.3); font-family:'DM Mono',monospace; font-size:12px; letter-spacing:1px; color:#9ca3af; background:rgba(255,92,26,0.04); transition:all 0.2s; cursor:pointer; }
         .tdz-niche-tag:hover { border-color:#ff5c1a; color:#ff5c1a; background:rgba(255,92,26,0.08); }
         .tdz-niche-other { padding:10px 20px; border:1px solid #ff5c1a; font-family:'DM Mono',monospace; font-size:12px; letter-spacing:1px; color:#ff5c1a; background:rgba(255,92,26,0.06); cursor:pointer; font-weight:700; transition:all 0.2s; }
         .tdz-niche-other:hover { background:#ff5c1a; color:#0a0a0a; }
@@ -577,7 +577,7 @@ export default function Home() {
         <h2 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:64, textTransform:"uppercase", lineHeight:1, marginBottom:20 }}>If You Book Jobs,<br /><span style={{ color:"#ff5c1a" }}>We&apos;re For You.</span></h2>
         <p style={{ fontSize:16, color:"#9ca3af", maxWidth:520, lineHeight:1.7, marginBottom:40 }}>From HVAC to roofing to medical. If your business runs on booked appointments and inbound calls, we built this for you.</p>
         <div style={{ display:"flex", flexWrap:"wrap", gap:12 }}>
-          {niches.map((tag,i) => <span key={i} className="tdz-niche-tag">{tag}</span>)}
+          {niches.map((tag,i) => <button key={i} className="tdz-niche-tag" onClick={() => setChatOpen(true)}>{tag}</button>)}
           <button className="tdz-niche-other" onClick={() => setOtherExpanded(o => !o)}>
             {otherExpanded ? "Any service business that books appointments or takes inbound calls" : "+ Other Industries"}
           </button>
