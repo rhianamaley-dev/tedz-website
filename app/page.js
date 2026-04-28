@@ -329,24 +329,24 @@ export default function Home() {
   const scrollTo = id => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
   const includes = [
-    { icon: "🌐", title: "Custom Domain Site",        desc: "Fully designed, mobile-first website branded to their business. Fast, secure, and built to convert visitors into booked jobs from day one.",                                                           tag: "Your Brand"  },
-    { icon: "🤖", title: "AI Chat Assistant",          desc: "Captures leads, answers questions, qualifies jobs, and books appointments 24/7 — even when your client is on the job site or off the clock.",                                                          tag: "Always On"   },
-    { icon: "📅", title: "Online Booking",             desc: "Customers book estimates and service calls directly from the site. No missed calls, no phone tag. Jobs land on the calendar automatically.",                                                           tag: "Pro & Elite" },
-    { icon: "📧", title: "Instant Lead Alerts",        desc: "Every chatbot lead fires an immediate notification — name, number, what they need. In the owner's inbox within seconds.",                                                                              tag: "Every Plan"  },
-    { icon: "📈", title: "Local SEO Setup",            desc: "Built to be found. Google Business integration, structured data, sitemap, and meta optimization — everything local search requires from day one.",                                                      tag: "Every Plan"  },
-    { icon: "🛡️", title: "Managed Hosting & Security", desc: "Enterprise-grade hosting, SSL certificate, DDoS protection, and 99.9% uptime — fully managed so they never have to think about it.",                                                                   tag: "Every Plan"  },
+    { icon: "🌐", title: "Custom Domain Site",        desc: "Fully designed, mobile-first website branded to your business. Fast, secure, and built to convert visitors into booked jobs from day one.",                                                           tag: "Your Brand"  },
+    { icon: "🤖", title: "AI Chat Assistant",          desc: "Captures leads, answers questions, qualifies jobs, and books appointments 24/7. Even when you are on the job site or off the clock.",                                                                  tag: "Always On"   },
+    { icon: "📅", title: "Online Booking",             desc: "Customers book estimates and service calls directly from your site. No missed calls, no phone tag. Jobs land on your calendar automatically.",                                                          tag: "Pro & Elite" },
+    { icon: "📧", title: "Instant Lead Alerts",        desc: "Every chatbot lead fires an immediate notification. Name, number, what they need. Hits your inbox within seconds.",                                                                                    tag: "Every Plan"  },
+    { icon: "📈", title: "Local SEO Setup",            desc: "Built to be found. Google Business integration, structured data, sitemap, and meta optimization. Everything local search requires from day one.",                                                       tag: "Every Plan"  },
+    { icon: "🛡️", title: "Managed Hosting & Security", desc: "Enterprise-grade hosting, SSL certificate, DDoS protection, and 99.9% uptime. Fully managed so you never have to think about it.",                                                                    tag: "Every Plan"  },
   ];
 
   const plans = [
     {
       badge: "Plan 01", name: "Starter", tagline: "Get online. Start capturing.",
-      features: ["Custom branded website — up to 5 pages", "Mobile-first, fast-loading design", "AI chatbot — 24/7 lead capture", "Instant lead email alerts", "Google Business profile setup", "Managed hosting & SSL", "Monthly performance report"],
+      features: ["Custom branded website, up to 5 pages", "Mobile-first, fast-loading design", "AI chatbot, 24/7 lead capture", "Instant lead email alerts", "Google Business profile setup", "Managed hosting & SSL", "Monthly performance report"],
       off: ["Online booking system", "SEO content writing", "Priority support"],
       best: "Just getting online",
     },
     {
       badge: "Most Popular — Plan 02", name: "Pro", featured: true, tagline: "Leads in. Jobs booked. You're busy.",
-      features: ["Everything in Starter", "AI chatbot with online booking", "Appointment scheduling built in", "Lead alerts — email & SMS", "Local SEO content (2 pages/month)", "Automated Google review requests", "Competitor visibility report", "Priority 24-hour support", "Quarterly strategy call"],
+      features: ["Everything in Starter", "AI chatbot with online booking", "Appointment scheduling built in", "Lead alerts, email & SMS", "Local SEO content (2 pages/month)", "Automated Google review requests", "Competitor visibility report", "Priority 24-hour support", "Quarterly strategy call"],
       off: [],
       best: "Growing service businesses",
     },
@@ -431,7 +431,7 @@ export default function Home() {
               <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
               <polyline points="22,6 12,13 2,6"/>
             </svg>
-            info@tedzintegrativesystems.com
+            Email Us
           </a>
           <span style={{ display:"flex", alignItems:"center", gap:6, color:"#6b7280" }}>
             <span style={{ width:6, height:6, borderRadius:"50%", background:"#4ADE80", display:"inline-block", boxShadow:"0 0 6px rgba(74,222,128,0.5)" }} />
@@ -452,19 +452,19 @@ export default function Home() {
         <div style={{ position:"absolute", inset:0, backgroundImage:"linear-gradient(rgba(255,92,26,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,92,26,0.04) 1px,transparent 1px)", backgroundSize:"60px 60px", pointerEvents:"none" }} />
         <div style={{ position:"absolute", top:-200, right:-200, width:700, height:700, borderRadius:"50%", background:"radial-gradient(circle,rgba(255,92,26,0.12) 0%,transparent 70%)", pointerEvents:"none" }} />
         <div style={{ position:"relative" }}>
-          <div className="tdz-a1" style={{ fontFamily:"'DM Mono',monospace", fontSize:12, letterSpacing:3, color:"#ff5c1a", textTransform:"uppercase", marginBottom:24 }}>White-Label AI Web Platform</div>
+          <div className="tdz-a1" style={{ fontFamily:"'DM Mono',monospace", fontSize:12, letterSpacing:3, color:"#ff5c1a", textTransform:"uppercase", marginBottom:24 }}>Done-For-You AI Websites</div>
           <h1 className="tdz-a2 tdz-hero-h" style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:120, lineHeight:0.92, letterSpacing:2, textTransform:"uppercase", marginBottom:32 }}>
             Your Brand.<br /><span style={{ color:"#ff5c1a" }}>Our Engine.</span>
           </h1>
-          <p className="tdz-a3" style={{ maxWidth:560, fontSize:18, color:"#9ca3af", fontWeight:300, lineHeight:1.7, marginBottom:48 }}>
-            We build, deploy, and manage AI-powered websites for local service businesses — fully branded to your client, powered by our infrastructure. HVAC, roofing, plumbing — 48-hour launch guaranteed.
+          <p className="tdz-a3" style={{ maxWidth:580, fontSize:18, color:"#9ca3af", fontWeight:300, lineHeight:1.7, marginBottom:48 }}>
+            We build, deploy, and manage AI-powered websites for local businesses. So you stop losing leads while you&apos;re on the job.
           </p>
           <div className="tdz-a4" style={{ display:"flex", gap:16, alignItems:"center", flexWrap:"wrap" }}>
             <button className="tdz-btn-primary" onClick={() => scrollTo("s-demo")}>See Live Demo</button>
             <button className="tdz-btn-ghost"   onClick={() => scrollTo("s-how")}>How It Works</button>
           </div>
           <div className="tdz-a5" style={{ display:"flex", gap:48, marginTop:80, flexWrap:"wrap" }}>
-            {[{ num:"48H", label:"Client Launch Time" },{ num:"$0", label:"Tech Overhead to Scale" },{ num:"100%", label:"White-Labeled" },{ num:"24/7", label:"AI Chatbot Active" }].map((s,i) => (
+            {[{ num:"48H", label:"Launch Time" },{ num:"100%", label:"Trained on Your Business" },{ num:"24/7", label:"AI Assistant Active" },{ num:"2 sec", label:"Response Time" }].map((s,i) => (
               <div key={i}>
                 <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:42, color:"#ff5c1a", lineHeight:1 }}>{s.num}</div>
                 <div style={{ fontFamily:"'DM Mono',monospace", fontSize:12, color:"#6b7280", textTransform:"uppercase", letterSpacing:"1.5px", marginTop:4 }}>{s.label}</div>
@@ -478,12 +478,12 @@ export default function Home() {
       <div style={{ background:"#ff5c1a", padding:"28px 48px" }}>
         <div style={{ maxWidth:1100, margin:"0 auto", display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:16 }}>
           <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:28, color:"#0a0a0a", letterSpacing:1 }}>
-            The average missed call costs a service business $400–$800 in lost revenue — or more!
+            The average missed call costs a service business $400 to $800 in lost revenue. Or more.
           </div>
           <button onClick={() => setChatOpen(true)} style={{ background:"#0a0a0a", color:"#ff5c1a", padding:"14px 32px", fontWeight:700, fontSize:14, letterSpacing:1, textTransform:"uppercase", border:"2px solid #0a0a0a", cursor:"pointer", fontFamily:"'DM Sans',sans-serif", flexShrink:0, whiteSpace:"nowrap", transition:"all 0.2s" }}
             onMouseEnter={e => { e.currentTarget.style.background="transparent"; e.currentTarget.style.color="#0a0a0a"; }}
             onMouseLeave={e => { e.currentTarget.style.background="#0a0a0a";    e.currentTarget.style.color="#ff5c1a"; }}
-          >Stop Losing Jobs →</button>
+          >Stop Losing Jobs</button>
         </div>
       </div>
 
@@ -492,14 +492,14 @@ export default function Home() {
         <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, letterSpacing:3, color:"#ff5c1a", textTransform:"uppercase", marginBottom:16 }}>How It Works</div>
         <h2 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:64, textTransform:"uppercase", lineHeight:1, marginBottom:20 }}>Live in 48 Hours.</h2>
         <p style={{ fontSize:16, color:"#9ca3af", maxWidth:520, lineHeight:1.7, marginBottom:64 }}>
-          We handle every part of the build. Your client hands us their logo, service area, and phone number. We hand them back a fully running AI-powered website — ready to capture leads.
+          We handle every part of the build. You hand us your logo, service area, and phone number. We hand you back a fully running AI-powered website. Ready to capture leads.
         </p>
         <div className="tdz-how-grid" style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:"1px", background:"rgba(255,255,255,0.06)", border:"1px solid rgba(255,255,255,0.06)", maxWidth:1000 }}>
           {[
-            { step:"01", title:"We Learn the Business", desc:"Services, service area, hours, and pricing. We do the rest — no forms, no spreadsheets. Just a quick conversation." },
-            { step:"02", title:"We Build the AI",       desc:"The AI assistant is trained on their exact business. It knows prices, hours, and service area. It does not guess — it knows." },
-            { step:"03", title:"We Launch the Site",    desc:"A fully branded, mobile-first website goes live in 48 hours on their existing domain. We handle every technical step." },
-            { step:"04", title:"Leads Hit Their Phone", desc:"Every time the AI captures a lead, the owner gets an instant alert — name, number, what they need. The job is practically theirs." },
+            { step:"01", title:"We Learn Your Business", desc:"Services, service area, hours, and pricing. We do the rest. No forms, no spreadsheets. Just a quick conversation." },
+            { step:"02", title:"We Build the AI",        desc:"The AI assistant is trained on your exact business. It knows your prices, hours, and service area. It does not guess. It knows." },
+            { step:"03", title:"We Launch the Site",     desc:"A fully branded, mobile-first website goes live in 48 hours on your domain. We handle every technical step." },
+            { step:"04", title:"Leads Hit Your Phone",   desc:"Every time the AI captures a lead, you get an instant alert. Name, number, what they need. The job is practically yours." },
           ].map((s,i) => (
             <div key={i} style={{ background:"#0a0a0a", padding:"40px 36px" }}>
               <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:48, color:"#ff5c1a", lineHeight:1, marginBottom:16, opacity:0.3 }}>{s.step}</div>
@@ -513,9 +513,9 @@ export default function Home() {
       {/* ── DEMO ── */}
       <section id="s-demo" className="tdz-sec-pad" style={{ padding:"100px 48px", background:"#1c1f26" }}>
         <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, letterSpacing:3, color:"#ff5c1a", textTransform:"uppercase", marginBottom:16 }}>Live Demo</div>
-        <h2 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:64, textTransform:"uppercase", lineHeight:1, marginBottom:20 }}>What Your Client Gets.</h2>
+        <h2 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:64, textTransform:"uppercase", lineHeight:1, marginBottom:20 }}>What You Get.</h2>
         <p style={{ fontSize:16, color:"#9ca3af", maxWidth:560, lineHeight:1.7, marginBottom:48 }}>
-          Every client gets a fully branded site like this — their colors, their name, their chatbot. Built on our infrastructure. Live in 48 hours.
+          Every site we build looks like this. Your colors, your name, your AI chatbot. Built on our infrastructure. Live in 48 hours.
         </p>
         <div style={{ background:"#111318", border:"1px solid rgba(255,255,255,0.08)", borderRadius:4, overflow:"hidden", boxShadow:"0 40px 80px rgba(0,0,0,0.5)", maxWidth:1100 }}>
           <div style={{ background:"#1a1d24", padding:"12px 20px", display:"flex", alignItems:"center", gap:12, borderBottom:"1px solid rgba(255,255,255,0.06)" }}>
@@ -526,7 +526,7 @@ export default function Home() {
             <div style={{ padding:"60px 48px", background:"linear-gradient(135deg,#0f1117 0%,#1c1f26 100%)", display:"flex", flexDirection:"column", justifyContent:"center" }}>
               <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:14, letterSpacing:4, color:"#ea580c", marginBottom:16 }}>SUNRISE ROOFING DFW</div>
               <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:52, lineHeight:0.95, color:"#f0f0f0", textTransform:"uppercase", marginBottom:20 }}>Storm<br /><span style={{ color:"#ea580c" }}>Damage?</span><br />We Fix It.</div>
-              <p style={{ fontSize:14, color:"#9ca3af", marginBottom:28, lineHeight:1.6 }}>Serving the DFW metroplex since 2011. Free inspections, insurance claims handled. Call now or chat below — we respond in seconds.</p>
+              <p style={{ fontSize:14, color:"#9ca3af", marginBottom:28, lineHeight:1.6 }}>Serving the DFW metroplex since 2011. Free inspections, insurance claims handled. Call now or chat below. We respond in seconds.</p>
               <button style={{ background:"#ea580c", color:"white", padding:"12px 28px", fontWeight:600, fontSize:13, border:"none", cursor:"pointer", letterSpacing:"0.5px", alignSelf:"flex-start" }}>Get a Free Roof Inspection</button>
             </div>
             <div className="tdz-demo-r" style={{ background:"#161920", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:24, borderLeft:"1px solid rgba(255,255,255,0.04)" }}>
@@ -539,7 +539,7 @@ export default function Home() {
                   <div style={{ background:"#1c2033", color:"#d1d5db", padding:"10px 14px", borderRadius:4, fontSize:13, lineHeight:1.5, maxWidth:"85%", alignSelf:"flex-start" }}>Hi! I'm the Sunrise Roofing assistant. Did your roof take any storm damage recently?</div>
                   <div style={{ background:"#ea580c", color:"white", padding:"10px 14px", borderRadius:4, fontSize:13, lineHeight:1.5, maxWidth:"85%", alignSelf:"flex-end" }}>Yes, hail hit my roof last week</div>
                   <div style={{ background:"#1c2033", color:"#d1d5db", padding:"10px 14px", borderRadius:4, fontSize:13, lineHeight:1.5, maxWidth:"85%", alignSelf:"flex-start" }}>
-                    We can get an inspector out today. What's your best phone number? We'll call you shortly — or you can{" "}
+                    We can get an inspector out today. What's your best phone number? We'll call you shortly. Or you can{" "}
                     <a href="https://cal.com/tedz-integrative-systems/service-appointment" target="_blank" rel="noopener noreferrer" style={{ color:"#ea580c", textDecoration:"underline", fontWeight:600 }}>book an appointment now</a>.
                   </div>
                 </div>
@@ -551,14 +551,14 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:"#6b7280", letterSpacing:"2px", textTransform:"uppercase", textAlign:"center", marginTop:20 }}>↑ Every client gets this — fully branded, AI-powered, bookings integrated</div>
+        <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:"#6b7280", letterSpacing:"2px", textTransform:"uppercase", textAlign:"center", marginTop:20 }}>↑ Every site we build. Fully branded. AI-powered. Bookings integrated.</div>
       </section>
 
       {/* ── EVERY PLAN / INCLUDES ── */}
       <section id="s-includes" className="tdz-sec-pad" style={{ padding:"100px 48px" }}>
         <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, letterSpacing:3, color:"#ff5c1a", textTransform:"uppercase", marginBottom:16 }}>Every Plan</div>
         <h2 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:64, textTransform:"uppercase", lineHeight:1, marginBottom:20 }}>Built for the <span style={{ color:"#ff5c1a" }}>Trades.</span></h2>
-        <p style={{ fontSize:16, color:"#9ca3af", maxWidth:580, lineHeight:1.7, marginBottom:0 }}>Everything a local service business needs to capture leads, book jobs, and look credible online — we handle the tech, they handle the work.</p>
+        <p style={{ fontSize:16, color:"#9ca3af", maxWidth:580, lineHeight:1.7, marginBottom:0 }}>Everything a local service business needs to capture leads, book jobs, and look credible online. We handle the tech. You handle the work.</p>
         <div className="tdz-inc-grid" style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"1px", background:"rgba(255,255,255,0.08)", border:"1px solid rgba(255,255,255,0.08)", marginTop:60 }}>
           {includes.map((card,i) => (
             <div key={i} className="tdz-inc-card">
@@ -573,22 +573,22 @@ export default function Home() {
 
       {/* ── WHO IT'S FOR ── */}
       <section id="s-who" className="tdz-sec-pad" style={{ padding:"80px 48px", background:"#1c1f26" }}>
-        <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, letterSpacing:3, color:"#ff5c1a", textTransform:"uppercase", marginBottom:16 }}>Who It's For</div>
-        <h2 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:64, textTransform:"uppercase", lineHeight:1, marginBottom:20 }}>If You Book Jobs,<br /><span style={{ color:"#ff5c1a" }}>We're For You.</span></h2>
-        <p style={{ fontSize:16, color:"#9ca3af", maxWidth:520, lineHeight:1.7, marginBottom:40 }}>From HVAC to roofing to medical — if your business runs on booked appointments and inbound calls, we built this for you.</p>
+        <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, letterSpacing:3, color:"#ff5c1a", textTransform:"uppercase", marginBottom:16 }}>Who It&apos;s For</div>
+        <h2 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:64, textTransform:"uppercase", lineHeight:1, marginBottom:20 }}>If You Book Jobs,<br /><span style={{ color:"#ff5c1a" }}>We&apos;re For You.</span></h2>
+        <p style={{ fontSize:16, color:"#9ca3af", maxWidth:520, lineHeight:1.7, marginBottom:40 }}>From HVAC to roofing to medical. If your business runs on booked appointments and inbound calls, we built this for you.</p>
         <div style={{ display:"flex", flexWrap:"wrap", gap:12 }}>
           {niches.map((tag,i) => <span key={i} className="tdz-niche-tag">{tag}</span>)}
           <button className="tdz-niche-other" onClick={() => setOtherExpanded(o => !o)}>
-            {otherExpanded ? "— Any service business that books appointments or takes inbound calls" : "+ Other Industries"}
+            {otherExpanded ? "Any service business that books appointments or takes inbound calls" : "+ Other Industries"}
           </button>
         </div>
       </section>
 
-      {/* ── PLANS — stacked rows ── */}
+      {/* ── PLANS ── */}
       <section id="s-plans" className="tdz-sec-pad" style={{ padding:"100px 48px", background:"#1c1f26" }}>
         <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, letterSpacing:3, color:"#ff5c1a", textTransform:"uppercase", marginBottom:16 }}>Pricing Plans</div>
         <h2 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:64, textTransform:"uppercase", lineHeight:1, marginBottom:20 }}>Simple. Scalable. Profitable.</h2>
-        <p style={{ fontSize:16, color:"#9ca3af", maxWidth:580, lineHeight:1.7, marginBottom:60 }}>Three plans built to match where your client is — from just getting online to full AI automation. Every plan is custom-quoted to their business size and goals.</p>
+        <p style={{ fontSize:16, color:"#9ca3af", maxWidth:580, lineHeight:1.7, marginBottom:60 }}>Three plans built to match where your business is. From just getting online to full AI automation. Every plan is custom-quoted to your business size and goals.</p>
         <div style={{ border:"1px solid rgba(255,255,255,0.08)", maxWidth:1100 }}>
           {plans.map((plan,i) => (
             <div key={i} className="tdz-plan-row" style={{ display:"grid", gridTemplateColumns:"240px 1fr auto", alignItems:"start", padding:"48px 40px", borderBottom: i < 2 ? "1px solid rgba(255,255,255,0.08)" : "none", gap:"48px", background: plan.featured ? "#ff5c1a" : "transparent", color: plan.featured ? "#0a0a0a" : "#f5f3ee" }}>
@@ -628,7 +628,7 @@ export default function Home() {
         <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, letterSpacing:3, color:"#ff5c1a", textTransform:"uppercase", marginBottom:16 }}>Get Started</div>
         <h2 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:72, textTransform:"uppercase", lineHeight:0.92, marginBottom:32 }}>Ready to Stop<br /><span style={{ color:"#ff5c1a" }}>Missing Jobs?</span></h2>
         <p style={{ fontSize:16, color:"#9ca3af", maxWidth:520, lineHeight:1.7, marginBottom:48 }}>
-          Talk to Jordan right now. In two minutes we'll know what your business needs. Custom quote within 24 hours — site live in 48.
+          Talk to Jordan right now. In two minutes we&apos;ll know what your business needs. Custom quote within 24 hours. Site live in 48.
         </p>
         <div style={{ display:"flex", gap:16, flexWrap:"wrap" }}>
           <button className="tdz-btn-primary" onClick={() => setChatOpen(true)}>Talk to Jordan Now</button>
@@ -657,7 +657,7 @@ export default function Home() {
             style={{ fontFamily:"'DM Mono',monospace", fontSize:12, color:"#6b7280", letterSpacing:"0.5px", transition:"color 0.2s" }}
             onMouseEnter={e => e.currentTarget.style.color="#ff5c1a"}
             onMouseLeave={e => e.currentTarget.style.color="#6b7280"}>
-            info@tedzintegrativesystems.com
+            Email Us
           </a>
           <span style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:"#4a5060", letterSpacing:"0.5px" }}>Privacy-first AI for local business.</span>
         </div>
