@@ -87,6 +87,19 @@ function ChatWidget({ isOpen, onToggle }) {
   useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, typing]);
   useEffect(() => { if (isOpen) setTimeout(() => inputRef.current?.focus(), 100); }, [isOpen]);
 
+  // Listen for industry tag clicks from the "Who It's For" section
+  useEffect(() => {
+    const handleNiche = (e) => {
+      const industry = e.detail;
+      if (industry && isOpen) {
+        setQuickReplies([]);
+        sendMessage(`I run a ${industry.toLowerCase()} business`);
+      }
+    };
+    window.addEventListener('nicheSelected', handleNiche);
+    return () => window.removeEventListener('nicheSelected', handleNiche);
+  }, [isOpen, messages, leadAlertSent, finalTranscriptSent]);
+
   const resetIdleTimer = () => {
     if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
     idleTimerRef.current = setTimeout(async () => {
@@ -577,7 +590,7 @@ export default function Home() {
         <h2 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:64, textTransform:"uppercase", lineHeight:1, marginBottom:20 }}>If You Book Jobs,<br /><span style={{ color:"#ff5c1a" }}>We&apos;re For You.</span></h2>
         <p style={{ fontSize:16, color:"#9ca3af", maxWidth:520, lineHeight:1.7, marginBottom:40 }}>From HVAC to roofing to medical. If your business runs on booked appointments and inbound calls, we built this for you.</p>
         <div style={{ display:"flex", flexWrap:"wrap", gap:12 }}>
-          {niches.map((tag,i) => <button key={i} className="tdz-niche-tag" onClick={() => setChatOpen(true)}>{tag}</button>)}
+          {niches.map((tag,i) => <button key={i} className="tdz-niche-tag" onClick={() => { setChatOpen(true); setTimeout(() => { const event = new CustomEvent('nicheSelected', { detail: tag }); window.dispatchEvent(event); }, 300); }}>{tag}</button>)}
           <button className="tdz-niche-other" onClick={() => setOtherExpanded(o => !o)}>
             {otherExpanded ? "Any service business that books appointments or takes inbound calls" : "+ Other Industries"}
           </button>
