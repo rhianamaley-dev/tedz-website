@@ -371,7 +371,7 @@ export default function Home() {
     },
   ];
 
-  const niches = ["HVAC Companies","Roofing Contractors","Plumbing","Electricians","General Contractors","Landscapers","Pest Control","Dental Offices","Med Spas","Chiropractors","Auto Body Shops","Pool Service"];
+  const niches = ["HVAC Companies","Roofing Contractors","Plumbers","Electricians","General Contractors","Landscapers","Pest Control","Dental Offices","Med Spas","Chiropractors","Auto Body Shops","Pool Service"];
 
   return (
     <>
@@ -460,27 +460,29 @@ export default function Home() {
       {/* ── SECTION NAV ── */}
       <SectionNav setChatOpen={setChatOpen} />
 
-      {/* ── HERO ── */}
-      <section id="s-hero" className="tdz-sec-pad" style={{ minHeight:"90vh", display:"flex", flexDirection:"column", justifyContent:"center", padding:"120px 48px 80px", position:"relative", overflow:"hidden" }}>
+      {/* ── HERO — Ready to Stop Missing Jobs ── */}
+      <section id="s-hero" className="tdz-sec-pad" style={{ minHeight:"90vh", display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", padding:"120px 48px 80px", position:"relative", overflow:"hidden", textAlign:"center" }}>
         <div style={{ position:"absolute", inset:0, backgroundImage:"linear-gradient(rgba(255,92,26,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,92,26,0.04) 1px,transparent 1px)", backgroundSize:"60px 60px", pointerEvents:"none" }} />
-        <div style={{ position:"absolute", top:-200, right:-200, width:700, height:700, borderRadius:"50%", background:"radial-gradient(circle,rgba(255,92,26,0.12) 0%,transparent 70%)", pointerEvents:"none" }} />
-        <div style={{ position:"relative" }}>
-          <div className="tdz-a1" style={{ fontFamily:"'DM Mono',monospace", fontSize:12, letterSpacing:3, color:"#ff5c1a", textTransform:"uppercase", marginBottom:24 }}>Done-For-You AI Websites</div>
+        <div style={{ position:"absolute", top:-200, left:"50%", transform:"translateX(-50%)", width:700, height:700, borderRadius:"50%", background:"radial-gradient(circle,rgba(255,92,26,0.12) 0%,transparent 70%)", pointerEvents:"none" }} />
+        <div style={{ position:"relative", maxWidth:900, margin:"0 auto" }}>
+          <div className="tdz-a1" style={{ fontFamily:"'DM Mono',monospace", fontSize:12, letterSpacing:3, color:"#ff5c1a", textTransform:"uppercase", marginBottom:24 }}>Get Started</div>
           <h1 className="tdz-a2 tdz-hero-h" style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:120, lineHeight:0.92, letterSpacing:2, textTransform:"uppercase", marginBottom:32 }}>
-            Your Brand.<br /><span style={{ color:"#ff5c1a" }}>Our Engine.</span>
+            Ready to Stop<br /><span style={{ color:"#ff5c1a" }}>Missing Jobs?</span>
           </h1>
-          <p className="tdz-a3" style={{ maxWidth:580, fontSize:18, color:"#9ca3af", fontWeight:300, lineHeight:1.7, marginBottom:48 }}>
-            We build, deploy, and manage AI-powered websites for local businesses. So you stop losing leads while you&apos;re on the job.
+          <p className="tdz-a3" style={{ maxWidth:580, fontSize:18, color:"#9ca3af", fontWeight:300, lineHeight:1.7, marginBottom:48, margin:"0 auto 48px" }}>
+            Talk to Jordan right now. In two minutes we&apos;ll know what your business needs. Custom quote within 24 hours. Site live in 48.
           </p>
-          <div className="tdz-a4" style={{ display:"flex", gap:16, alignItems:"center", flexWrap:"wrap" }}>
-            <button className="tdz-btn-primary" onClick={() => scrollTo("s-demo")}>See Live Demo</button>
-            <button className="tdz-btn-ghost"   onClick={() => scrollTo("s-how")}>How It Works</button>
+          <div className="tdz-a4" style={{ display:"flex", gap:16, alignItems:"center", justifyContent:"center", flexWrap:"wrap" }}>
+            <button className="tdz-btn-primary" onClick={() => setChatOpen(true)}>Talk to Jordan Now</button>
+            <a href="https://cal.com/tedz-integrative-systems/service-appointment" target="_blank" rel="noopener noreferrer">
+              <button className="tdz-btn-ghost">Book a 15-Min Call</button>
+            </a>
           </div>
-          <div className="tdz-a5" style={{ display:"flex", gap:48, marginTop:80, flexWrap:"wrap" }}>
-            {[{ num:"48H", label:"Launch Time" },{ num:"100%", label:"Trained on Your Business" },{ num:"24/7", label:"AI Assistant Active" },{ num:"2 sec", label:"Response Time" }].map((s,i) => (
+          <div className="tdz-a5" style={{ display:"flex", gap:48, marginTop:80, flexWrap:"wrap", justifyContent:"center" }}>
+            {["Your Domain Stays Yours","No Long-Term Contracts","Live in 48 Hours","HIPAA Compliant","Real Humans Behind the AI"].map((label,i) => (
               <div key={i}>
-                <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:42, color:"#ff5c1a", lineHeight:1 }}>{s.num}</div>
-                <div style={{ fontFamily:"'DM Mono',monospace", fontSize:12, color:"#6b7280", textTransform:"uppercase", letterSpacing:"1.5px", marginTop:4 }}>{s.label}</div>
+                <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:18, color:"#ff5c1a", letterSpacing:1, marginBottom:4 }}>—</div>
+                <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:"#6b7280", letterSpacing:"1.5px", textTransform:"uppercase" }}>{label}</div>
               </div>
             ))}
           </div>
@@ -489,7 +491,7 @@ export default function Home() {
 
       {/* ── PROBLEM STRIP ── */}
       <div style={{ background:"#ff5c1a", padding:"28px 48px" }}>
-        <div style={{ maxWidth:1100, margin:"0 auto", display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:16 }}>
+        <div style={{ maxWidth:1100, margin:"0 auto", display:"flex", alignItems:"center", justifyContent:"center", flexWrap:"wrap", gap:16, textAlign:"center" }}>
           <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:28, color:"#0a0a0a", letterSpacing:1 }}>
             The average missed call costs a service business $400 to $800 in lost revenue. Or more.
           </div>
@@ -500,14 +502,36 @@ export default function Home() {
         </div>
       </div>
 
+      {/* ── YOUR BRAND. OUR ENGINE. (moved from hero to secondary brand section) ── */}
+      <section className="tdz-sec-pad" style={{ padding:"100px 48px", textAlign:"center" }}>
+        <div style={{ maxWidth:900, margin:"0 auto" }}>
+          <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, letterSpacing:3, color:"#ff5c1a", textTransform:"uppercase", marginBottom:16 }}>Done-For-You AI Websites</div>
+          <h2 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:80, lineHeight:0.92, letterSpacing:2, textTransform:"uppercase", marginBottom:32 }}>
+            Your Brand.<br /><span style={{ color:"#ff5c1a" }}>Our Engine.</span>
+          </h2>
+          <p style={{ maxWidth:580, fontSize:18, color:"#9ca3af", fontWeight:300, lineHeight:1.7, marginBottom:48, margin:"0 auto 48px" }}>
+            We build, deploy, and manage AI-powered websites for local businesses. So you stop losing leads while you&apos;re on the job.
+          </p>
+          <div style={{ display:"flex", gap:48, flexWrap:"wrap", justifyContent:"center" }}>
+            {[{ num:"48H", label:"Launch Time" },{ num:"100%", label:"Trained on Your Business" },{ num:"24/7", label:"AI Assistant Active" },{ num:"2 sec", label:"Response Time" }].map((s,i) => (
+              <div key={i}>
+                <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:42, color:"#ff5c1a", lineHeight:1 }}>{s.num}</div>
+                <div style={{ fontFamily:"'DM Mono',monospace", fontSize:12, color:"#6b7280", textTransform:"uppercase", letterSpacing:"1.5px", marginTop:4 }}>{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── HOW IT WORKS ── */}
-      <section id="s-how" className="tdz-sec-pad" style={{ padding:"100px 48px", background:"#1c1f26" }}>
+      <section id="s-how" className="tdz-sec-pad" style={{ padding:"100px 48px", background:"#1c1f26", textAlign:"center" }}>
+        <div style={{ maxWidth:1000, margin:"0 auto" }}>
         <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, letterSpacing:3, color:"#ff5c1a", textTransform:"uppercase", marginBottom:16 }}>How It Works</div>
         <h2 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:64, textTransform:"uppercase", lineHeight:1, marginBottom:20 }}>Live in 48 Hours.</h2>
-        <p style={{ fontSize:16, color:"#9ca3af", maxWidth:520, lineHeight:1.7, marginBottom:64 }}>
+        <p style={{ fontSize:16, color:"#9ca3af", maxWidth:520, lineHeight:1.7, marginBottom:64, margin:"0 auto 64px" }}>
           We handle every part of the build. You hand us your logo, service area, and phone number. We hand you back a fully running AI-powered website. Ready to capture leads.
         </p>
-        <div className="tdz-how-grid" style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:"1px", background:"rgba(255,255,255,0.06)", border:"1px solid rgba(255,255,255,0.06)", maxWidth:1000 }}>
+        <div className="tdz-how-grid" style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:"1px", background:"rgba(255,255,255,0.06)", border:"1px solid rgba(255,255,255,0.06)", maxWidth:1000, margin:"0 auto", textAlign:"left" }}>
           {[
             { step:"01", title:"We Learn Your Business", desc:"Services, service area, hours, and pricing. We do the rest. No forms, no spreadsheets. Just a quick conversation." },
             { step:"02", title:"We Build the AI",        desc:"The AI assistant is trained on your exact business. It knows your prices, hours, and service area. It does not guess. It knows." },
@@ -521,16 +545,18 @@ export default function Home() {
             </div>
           ))}
         </div>
+        </div>
       </section>
 
       {/* ── DEMO ── */}
-      <section id="s-demo" className="tdz-sec-pad" style={{ padding:"100px 48px", background:"#1c1f26" }}>
+      <section id="s-demo" className="tdz-sec-pad" style={{ padding:"100px 48px", background:"#1c1f26", textAlign:"center" }}>
+        <div style={{ maxWidth:1100, margin:"0 auto" }}>
         <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, letterSpacing:3, color:"#ff5c1a", textTransform:"uppercase", marginBottom:16 }}>Live Demo</div>
         <h2 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:64, textTransform:"uppercase", lineHeight:1, marginBottom:20 }}>What You Get.</h2>
-        <p style={{ fontSize:16, color:"#9ca3af", maxWidth:560, lineHeight:1.7, marginBottom:48 }}>
+        <p style={{ fontSize:16, color:"#9ca3af", maxWidth:560, lineHeight:1.7, marginBottom:48, margin:"0 auto 48px" }}>
           Every site we build looks like this. Your colors, your name, your AI chatbot. Built on our infrastructure. Live in 48 hours.
         </p>
-        <div style={{ background:"#111318", border:"1px solid rgba(255,255,255,0.08)", borderRadius:4, overflow:"hidden", boxShadow:"0 40px 80px rgba(0,0,0,0.5)", maxWidth:1100 }}>
+        <div style={{ background:"#111318", border:"1px solid rgba(255,255,255,0.08)", borderRadius:4, overflow:"hidden", boxShadow:"0 40px 80px rgba(0,0,0,0.5)", maxWidth:1100, margin:"0 auto", textAlign:"left" }}>
           <div style={{ background:"#1a1d24", padding:"12px 20px", display:"flex", alignItems:"center", gap:12, borderBottom:"1px solid rgba(255,255,255,0.06)" }}>
             <div style={{ display:"flex", gap:6 }}>{["#ff5f57","#febc2e","#28c840"].map((c,i)=><div key={i} style={{ width:11, height:11, borderRadius:"50%", background:c }} />)}</div>
             <div style={{ flex:1, background:"#0f1117", padding:"5px 14px", borderRadius:3, fontFamily:"'DM Mono',monospace", fontSize:12, color:"#6b7280", marginLeft:8 }}>🔒 sunriseroofingdfw.com</div>
@@ -565,14 +591,16 @@ export default function Home() {
           </div>
         </div>
         <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:"#6b7280", letterSpacing:"2px", textTransform:"uppercase", textAlign:"center", marginTop:20 }}>↑ Every site we build. Fully branded. AI-powered. Bookings integrated.</div>
+        </div>
       </section>
 
       {/* ── EVERY PLAN / INCLUDES ── */}
-      <section id="s-includes" className="tdz-sec-pad" style={{ padding:"100px 48px" }}>
+      <section id="s-includes" className="tdz-sec-pad" style={{ padding:"100px 48px", textAlign:"center" }}>
+        <div style={{ maxWidth:1100, margin:"0 auto" }}>
         <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, letterSpacing:3, color:"#ff5c1a", textTransform:"uppercase", marginBottom:16 }}>Every Plan</div>
         <h2 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:64, textTransform:"uppercase", lineHeight:1, marginBottom:20 }}>Built for the <span style={{ color:"#ff5c1a" }}>Trades.</span></h2>
-        <p style={{ fontSize:16, color:"#9ca3af", maxWidth:580, lineHeight:1.7, marginBottom:0 }}>Everything a local service business needs to capture leads, book jobs, and look credible online. We handle the tech. You handle the work.</p>
-        <div className="tdz-inc-grid" style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"1px", background:"rgba(255,255,255,0.08)", border:"1px solid rgba(255,255,255,0.08)", marginTop:60 }}>
+        <p style={{ fontSize:16, color:"#9ca3af", maxWidth:580, lineHeight:1.7, marginBottom:0, margin:"0 auto" }}>Everything a local service business needs to capture leads, book jobs, and look credible online. We handle the tech. You handle the work.</p>
+        <div className="tdz-inc-grid" style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"1px", background:"rgba(255,255,255,0.08)", border:"1px solid rgba(255,255,255,0.08)", marginTop:60, textAlign:"left" }}>
           {includes.map((card,i) => (
             <div key={i} className="tdz-inc-card">
               <div style={{ fontSize:28, marginBottom:20 }}>{card.icon}</div>
@@ -582,27 +610,31 @@ export default function Home() {
             </div>
           ))}
         </div>
+        </div>
       </section>
 
       {/* ── WHO IT'S FOR ── */}
-      <section id="s-who" className="tdz-sec-pad" style={{ padding:"80px 48px", background:"#1c1f26" }}>
+      <section id="s-who" className="tdz-sec-pad" style={{ padding:"80px 48px", background:"#1c1f26", textAlign:"center" }}>
+        <div style={{ maxWidth:1000, margin:"0 auto" }}>
         <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, letterSpacing:3, color:"#ff5c1a", textTransform:"uppercase", marginBottom:16 }}>Who It&apos;s For</div>
         <h2 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:64, textTransform:"uppercase", lineHeight:1, marginBottom:20 }}>If You Book Jobs,<br /><span style={{ color:"#ff5c1a" }}>We&apos;re For You.</span></h2>
-        <p style={{ fontSize:16, color:"#9ca3af", maxWidth:520, lineHeight:1.7, marginBottom:40 }}>From HVAC to roofing to medical. If your business runs on booked appointments and inbound calls, we built this for you.</p>
-        <div style={{ display:"flex", flexWrap:"wrap", gap:12 }}>
+        <p style={{ fontSize:16, color:"#9ca3af", maxWidth:520, lineHeight:1.7, marginBottom:40, margin:"0 auto 40px" }}>From HVAC to roofing to medical. If your business runs on booked appointments and inbound calls, we built this for you.</p>
+        <div style={{ display:"flex", flexWrap:"wrap", gap:12, justifyContent:"center" }}>
           {niches.map((tag,i) => <button key={i} className="tdz-niche-tag" onClick={() => { setChatOpen(true); setTimeout(() => { const event = new CustomEvent('nicheSelected', { detail: tag }); window.dispatchEvent(event); }, 300); }}>{tag}</button>)}
           <button className="tdz-niche-other" onClick={() => setOtherExpanded(o => !o)}>
             {otherExpanded ? "Any service business that books appointments or takes inbound calls" : "+ Other Industries"}
           </button>
         </div>
+        </div>
       </section>
 
       {/* ── PLANS ── */}
-      <section id="s-plans" className="tdz-sec-pad" style={{ padding:"100px 48px", background:"#1c1f26" }}>
+      <section id="s-plans" className="tdz-sec-pad" style={{ padding:"100px 48px", background:"#1c1f26", textAlign:"center" }}>
+        <div style={{ maxWidth:1100, margin:"0 auto" }}>
         <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, letterSpacing:3, color:"#ff5c1a", textTransform:"uppercase", marginBottom:16 }}>Pricing Plans</div>
         <h2 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:64, textTransform:"uppercase", lineHeight:1, marginBottom:20 }}>Simple. Scalable. Profitable.</h2>
-        <p style={{ fontSize:16, color:"#9ca3af", maxWidth:580, lineHeight:1.7, marginBottom:60 }}>Three plans built to match where your business is. From just getting online to full AI automation. Every plan is custom-quoted to your business size and goals.</p>
-        <div style={{ border:"1px solid rgba(255,255,255,0.08)", maxWidth:1100 }}>
+        <p style={{ fontSize:16, color:"#9ca3af", maxWidth:580, lineHeight:1.7, marginBottom:60, margin:"0 auto 60px" }}>Three plans built to match where your business is. From just getting online to full AI automation. Every plan is custom-quoted to your business size and goals.</p>
+        <div style={{ border:"1px solid rgba(255,255,255,0.08)", maxWidth:1100, textAlign:"left" }}>
           {plans.map((plan,i) => (
             <div key={i} className="tdz-plan-row" style={{ display:"grid", gridTemplateColumns:"240px 1fr auto", alignItems:"start", padding:"48px 40px", borderBottom: i < 2 ? "1px solid rgba(255,255,255,0.08)" : "none", gap:"48px", background: plan.featured ? "#ff5c1a" : "transparent", color: plan.featured ? "#0a0a0a" : "#f5f3ee" }}>
               <div>
@@ -634,33 +666,36 @@ export default function Home() {
             </div>
           ))}
         </div>
+        </div>
       </section>
 
-      {/* ── CONTACT ── */}
-      <section id="s-contact" className="tdz-sec-pad" style={{ padding:"100px 48px" }}>
-        <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, letterSpacing:3, color:"#ff5c1a", textTransform:"uppercase", marginBottom:16 }}>Get Started</div>
-        <h2 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:72, textTransform:"uppercase", lineHeight:0.92, marginBottom:32 }}>Ready to Stop<br /><span style={{ color:"#ff5c1a" }}>Missing Jobs?</span></h2>
-        <p style={{ fontSize:16, color:"#9ca3af", maxWidth:520, lineHeight:1.7, marginBottom:48 }}>
-          Talk to Jordan right now. In two minutes we&apos;ll know what your business needs. Custom quote within 24 hours. Site live in 48.
-        </p>
-        <div style={{ display:"flex", gap:16, flexWrap:"wrap" }}>
-          <button className="tdz-btn-primary" onClick={() => setChatOpen(true)}>Talk to Jordan Now</button>
-          <a href="https://cal.com/tedz-integrative-systems/service-appointment" target="_blank" rel="noopener noreferrer">
-            <button className="tdz-btn-ghost">Book a 15-Min Call</button>
-          </a>
-        </div>
-        <div style={{ display:"flex", gap:48, marginTop:64, flexWrap:"wrap" }}>
-          {["Your Domain Stays Yours","No Long-Term Contracts","Live in 48 Hours","HIPAA Compliant","Real Humans Behind the AI"].map((label,i) => (
-            <div key={i}>
-              <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:18, color:"#ff5c1a", letterSpacing:1, marginBottom:4 }}>—</div>
-              <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:"#6b7280", letterSpacing:"1.5px", textTransform:"uppercase" }}>{label}</div>
-            </div>
-          ))}
+      {/* ── CONTACT (simplified repeat CTA) ── */}
+      <section id="s-contact" className="tdz-sec-pad" style={{ padding:"100px 48px", textAlign:"center" }}>
+        <div style={{ maxWidth:800, margin:"0 auto" }}>
+          <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, letterSpacing:3, color:"#ff5c1a", textTransform:"uppercase", marginBottom:16 }}>Get Started</div>
+          <h2 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:72, textTransform:"uppercase", lineHeight:0.92, marginBottom:32 }}>Ready to Stop<br /><span style={{ color:"#ff5c1a" }}>Missing Jobs?</span></h2>
+          <p style={{ fontSize:16, color:"#9ca3af", maxWidth:520, lineHeight:1.7, margin:"0 auto 48px" }}>
+            Talk to Jordan right now. In two minutes we&apos;ll know what your business needs. Custom quote within 24 hours. Site live in 48.
+          </p>
+          <div style={{ display:"flex", gap:16, flexWrap:"wrap", justifyContent:"center" }}>
+            <button className="tdz-btn-primary" onClick={() => setChatOpen(true)}>Talk to Jordan Now</button>
+            <a href="https://cal.com/tedz-integrative-systems/service-appointment" target="_blank" rel="noopener noreferrer">
+              <button className="tdz-btn-ghost">Book a 15-Min Call</button>
+            </a>
+          </div>
+          <div style={{ display:"flex", gap:48, marginTop:64, flexWrap:"wrap", justifyContent:"center" }}>
+            {["Your Domain Stays Yours","No Long-Term Contracts","Live in 48 Hours","HIPAA Compliant","Real Humans Behind the AI"].map((label,i) => (
+              <div key={i}>
+                <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:18, color:"#ff5c1a", letterSpacing:1, marginBottom:4 }}>—</div>
+                <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:"#6b7280", letterSpacing:"1.5px", textTransform:"uppercase" }}>{label}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* ── FOOTER ── */}
-      <footer style={{ background:"#0a0a0a", borderTop:"1px solid rgba(255,255,255,0.06)", padding:"40px 48px", display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:16 }}>
+      <footer style={{ background:"#0a0a0a", borderTop:"1px solid rgba(255,255,255,0.06)", padding:"40px 48px", display:"flex", alignItems:"center", justifyContent:"center", flexWrap:"wrap", gap:16, textAlign:"center" }}>
         <div>
           <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:20, letterSpacing:2, color:"#ff5c1a" }}>TEDZ INTEGRATIVE SYSTEMS</div>
           <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, color:"#6b7280", letterSpacing:"1px", marginTop:4 }}>© 2026 TEDZ Integrative Systems LLC. All rights reserved.</div>
