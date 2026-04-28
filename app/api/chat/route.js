@@ -2,12 +2,12 @@ import { NextResponse } from "next/server";
 
 /* ────────────────────────────────────────────
    TWO-STAGE LEAD ALERT SYSTEM
-   
+
    STAGE 1 — IMMEDIATE ALERT
    Fires the moment name + phone are captured.
    Subject: "[NEW LEAD] Name (Phone)"
    Purpose: act fast, call them back NOW.
-   
+
    STAGE 2 — FINAL TRANSCRIPT
    Fires when the conversation appears finished:
      - Visitor has been idle for 2+ minutes (frontend detects, sends "finalize" signal)
@@ -15,7 +15,7 @@ import { NextResponse } from "next/server";
      - Conversation reaches 8+ total messages
    Subject: "[FINAL] Name (Business) - Full transcript"
    Purpose: complete record with context for follow-up.
-   
+
    Each stage fires only ONCE per conversation, tracked by flags from the frontend.
    ──────────────────────────────────────────── */
 
@@ -75,7 +75,7 @@ function extractLeadInfo(history, currentMessage) {
 
   for (const msg of userMessages) {
     if (!phone) phone = extractPhone(msg);
-    if (!name) name = extractName(msg);
+    if (!name)  name  = extractName(msg);
   }
 
   // Business type: short reply that isn't the contact info or first message
@@ -98,7 +98,6 @@ function extractLeadInfo(history, currentMessage) {
 function looksLikeFarewell(text) {
   if (!text) return false;
   const t = text.toLowerCase().trim();
-  // Direct farewells
   const farewells = [
     /^bye\b/, /^goodbye\b/, /^see ya\b/, /^see you\b/,
     /^thanks?(\s+(so|a))?\s*much/, /^thank you\b/, /^ty\b/,
@@ -118,7 +117,7 @@ function looksLikeFarewell(text) {
 function buildConversationHtml(messages) {
   return messages
     .map(m => {
-      const role = m.role === "user" ? "Visitor" : "Jordan";
+      const role  = m.role === "user" ? "Visitor" : "Jordan";
       const color = m.role === "user" ? "#1B2C5C" : "#64748B";
       return `<div style="margin-bottom:12px;"><strong style="color:${color}">${role}:</strong> ${m.content.replace(/\n/g, "<br>")}</div>`;
     })
@@ -178,8 +177,8 @@ async function sendFinalTranscript(lead, messages, reason) {
     return;
   }
   const reasonText = {
-    farewell: "Visitor said goodbye or thank you.",
-    idle: "Visitor was idle for over 2 minutes.",
+    farewell:  "Visitor said goodbye or thank you.",
+    idle:      "Visitor was idle for over 2 minutes.",
     threshold: `Conversation reached ${FINAL_EMAIL_MESSAGE_COUNT_THRESHOLD}+ messages.`,
   }[reason] || "Conversation completed.";
 
@@ -204,7 +203,7 @@ async function sendEmail(subject, html, tag) {
       },
       body: JSON.stringify({
         from: ALERT_FROM_EMAIL,
-        to: ALERT_TO_EMAIL,
+        to:   ALERT_TO_EMAIL,
         subject,
         html,
         tags: [{ name: "stage", value: tag }],
@@ -230,18 +229,15 @@ export async function POST(request) {
       message,
       businessInfo,
       history,
-      leadAlertSent,        // immediate-alert flag from frontend
-      finalTranscriptSent,  // final-transcript flag from frontend
-      finalize,             // signal from frontend that idle timer fired
+      leadAlertSent,       // immediate-alert flag from frontend
+      finalTranscriptSent, // final-transcript flag from frontend
+      finalize,            // signal from frontend that idle timer fired
     } = await request.json();
 
-    const userMessages = (history || []).filter(m => m.role === "user");
+    const userMessages     = (history || []).filter(m => m.role === "user");
     const totalMessageCount = (history || []).length + (message ? 1 : 0);
 
-    // ────────────────────────────────────────────
-    // FINALIZE-ONLY REQUEST (no chat reply needed)
-    // Frontend sends this when the idle timer fires.
-    // ────────────────────────────────────────────
+    /* ── FINALIZE-ONLY REQUEST ── */
     if (finalize === true && !finalTranscriptSent && !businessInfo) {
       const lead = extractLeadInfo(history, "");
       if (lead.name && lead.phone) {
@@ -251,12 +247,10 @@ export async function POST(request) {
       return NextResponse.json({ finalTranscriptSent: false });
     }
 
-    // ────────────────────────────────────────────
-    // SYSTEM PROMPT
-    // ────────────────────────────────────────────
+    /* ── SYSTEM PROMPT ── */
     const systemPrompt = businessInfo
       ? `You are Jordan, the AI chat assistant for ${businessInfo.name}. ${businessInfo.prompt || ""}
-      
+
 BUSINESS INFO:
 ${businessInfo.details || "No details provided."}
 
@@ -302,23 +296,21 @@ GENERAL RULES:
 7. Once name and phone are captured, NEVER re-ask. Do not ask for a "full name", "last name", or any other variation if they've already given you a name.
 8. If they get hesitant about giving their phone, say it's just so the team can follow up, and assure them you won't share it.`;
 
-    // ────────────────────────────────────────────
-    // CALL CLAUDE API
-    // ────────────────────────────────────────────
+    /* ── CALL CLAUDE API ── */
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        "x-api-key": process.env.ANTHROPIC_API_KEY,
+        "Content-Type":    "application/json",
+        "x-api-key":       process.env.ANTHROPIC_API_KEY,
         "anthropic-version": "2023-06-01",
       },
       body: JSON.stringify({
-        model: "claude-haiku-4-5-20251001",
+        model:      "claude-haiku-4-5-20251001",
         max_tokens: 250,
-        system: systemPrompt,
+        system:     systemPrompt,
         messages: [
           ...(history || []),
-          { role: "user", content: message }
+          { role: "user", content: message },
         ],
       }),
     });
@@ -329,18 +321,16 @@ GENERAL RULES:
       return NextResponse.json({ error: "AI service error" }, { status: 500 });
     }
 
-    const data = await response.json();
-    let reply = data.content[0].text;
+    const data  = await response.json();
+    let   reply = data.content[0].text;
 
-    // Dash stripper
+    // Dash stripper — keeps Jordan's replies clean
     reply = reply
       .replace(/\s+[—–]\s+/g, ". ")
       .replace(/[—–]/g, ",")
       .replace(/\s+-\s+/g, ". ");
 
-    // ────────────────────────────────────────────
-    // EMAIL TRIGGERING (only on TEDZ-side bot)
-    // ────────────────────────────────────────────
+    /* ── EMAIL TRIGGERING (TEDZ-side bot only) ── */
     let alertJustSent = false;
     let finalJustSent = false;
 
@@ -348,8 +338,8 @@ GENERAL RULES:
       const lead = extractLeadInfo(history, message);
       const fullConv = [
         ...(history || []),
-        { role: "user", content: message },
-        { role: "assistant", content: reply },
+        { role: "user",      content: message },
+        { role: "assistant", content: reply   },
       ];
 
       // STAGE 1: Immediate alert when name + phone captured
@@ -359,20 +349,13 @@ GENERAL RULES:
       }
 
       // STAGE 2: Final transcript triggers
-      // Only fire if we have at least name+phone (otherwise nothing useful to send)
-      // and we've already sent the immediate alert (or we're sending it now)
       if (!finalTranscriptSent && (leadAlertSent || alertJustSent) && lead.name && lead.phone) {
         let triggerReason = null;
-
-        // Trigger A: visitor said goodbye/thanks
         if (looksLikeFarewell(message)) {
           triggerReason = "farewell";
-        }
-        // Trigger B: conversation hit message threshold
-        else if (fullConv.length >= FINAL_EMAIL_MESSAGE_COUNT_THRESHOLD) {
+        } else if (fullConv.length >= FINAL_EMAIL_MESSAGE_COUNT_THRESHOLD) {
           triggerReason = "threshold";
         }
-
         if (triggerReason) {
           sendFinalTranscript(lead, fullConv, triggerReason).catch(err =>
             console.error("Final transcript failed:", err)
@@ -384,7 +367,7 @@ GENERAL RULES:
 
     return NextResponse.json({
       reply,
-      leadAlertSent: leadAlertSent || alertJustSent,
+      leadAlertSent:       leadAlertSent       || alertJustSent,
       finalTranscriptSent: finalTranscriptSent || finalJustSent,
     });
   } catch (error) {
