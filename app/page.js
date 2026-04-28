@@ -371,7 +371,7 @@ export default function Home() {
     },
   ];
 
-  const niches = ["HVAC Companies","Roofing Contractors","Plumbers","Electricians","General Contractors","Landscapers","Pest Control","Dental Offices","Med Spas","Chiropractors","Auto Body Shops","Pool Service"];
+  const niches = ["HVAC Companies","Roofing Contractors","Plumbing","Electricians","General Contractors","Landscapers","Pest Control","Dental Offices","Med Spas","Chiropractors","Auto Body Shops","Pool Service"];
 
   return (
     <>
