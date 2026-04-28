@@ -119,7 +119,7 @@ function buildConversationHtml(messages) {
   return messages
     .map(m => {
       const role = m.role === "user" ? "Visitor" : "Jordan";
-      const color = m.role === "user" ? "#1B2C5C" : "#64748B";
+      const color = m.role === "user" ? "#ff5c1a" : "#9ca3af";
       return `<div style="margin-bottom:12px;"><strong style="color:${color}">${role}:</strong> ${m.content.replace(/\n/g, "<br>")}</div>`;
     })
     .join("");
@@ -128,23 +128,23 @@ function buildConversationHtml(messages) {
 function buildEmailHtml({ headerLabel, headerColor, lead, messages, footerNote }) {
   return `
     <div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:600px;margin:0 auto;padding:24px;">
-      <div style="background:${headerColor};color:#F5B82E;padding:20px;border-radius:12px 12px 0 0;">
-        <div style="font-size:11px;letter-spacing:0.15em;font-weight:700;opacity:0.9;margin-bottom:4px;">${headerLabel}</div>
-        <h1 style="margin:0;font-size:22px;color:#F5B82E;">${lead.name || "Unknown lead"}</h1>
+      <div style="background:${headerColor};padding:20px;border-radius:12px 12px 0 0;">
+        <div style="font-size:11px;letter-spacing:0.15em;font-weight:700;opacity:0.9;margin-bottom:4px;color:#f5f3ee;">${headerLabel}</div>
+        <h1 style="margin:0;font-size:22px;color:#ff5c1a;">${lead.name || "Unknown lead"}</h1>
       </div>
-      <div style="background:#FAF7F0;padding:24px;border-radius:0 0 12px 12px;border:1px solid #E8ECF0;border-top:none;">
+      <div style="background:#1c1f26;padding:24px;border-radius:0 0 12px 12px;border:1px solid rgba(255,255,255,0.1);border-top:none;">
         <table style="width:100%;border-collapse:collapse;">
-          <tr><td style="padding:8px 0;color:#64748B;width:120px;">Name</td><td style="padding:8px 0;font-weight:700;color:#1B2C5C;">${lead.name || "(not captured)"}</td></tr>
-          <tr><td style="padding:8px 0;color:#64748B;">Phone</td><td style="padding:8px 0;font-weight:700;color:#1B2C5C;">${lead.phone || "(not captured)"}</td></tr>
-          <tr><td style="padding:8px 0;color:#64748B;">Business</td><td style="padding:8px 0;font-weight:700;color:#1B2C5C;">${lead.business || "(not captured yet)"}</td></tr>
-          <tr><td style="padding:8px 0;color:#64748B;">Captured</td><td style="padding:8px 0;color:#1B2C5C;">${new Date().toLocaleString("en-US", { timeZone: "America/Chicago" })} CT</td></tr>
+          <tr><td style="padding:8px 0;color:#9ca3af;width:120px;">Name</td><td style="padding:8px 0;font-weight:700;color:#f5f3ee;">${lead.name || "(not captured)"}</td></tr>
+          <tr><td style="padding:8px 0;color:#9ca3af;">Phone</td><td style="padding:8px 0;font-weight:700;color:#f5f3ee;">${lead.phone || "(not captured)"}</td></tr>
+          <tr><td style="padding:8px 0;color:#9ca3af;">Business</td><td style="padding:8px 0;font-weight:700;color:#f5f3ee;">${lead.business || "(not captured yet)"}</td></tr>
+          <tr><td style="padding:8px 0;color:#9ca3af;">Captured</td><td style="padding:8px 0;color:#f5f3ee;">${new Date().toLocaleString("en-US", { timeZone: "America/Chicago" })} CT</td></tr>
         </table>
-        <h2 style="margin:24px 0 12px;font-size:16px;color:#1B2C5C;">Full conversation (${messages.length} messages)</h2>
-        <div style="background:#fff;padding:16px;border-radius:8px;border:1px solid #E8ECF0;font-size:14px;line-height:1.6;">
+        <h2 style="margin:24px 0 12px;font-size:16px;color:#f5f3ee;">Full conversation (${messages.length} messages)</h2>
+        <div style="background:#0a0a0a;padding:16px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);font-size:14px;line-height:1.6;color:#d1d5db;">
           ${buildConversationHtml(messages)}
         </div>
-        ${footerNote ? `<div style="margin-top:16px;padding:12px;background:#FFF8E7;border-left:3px solid #F5B82E;border-radius:6px;font-size:13px;color:#1B2C5C;">${footerNote}</div>` : ""}
-        <div style="margin-top:24px;padding-top:16px;border-top:1px solid #E8ECF0;color:#94A3B8;font-size:12px;">
+        ${footerNote ? `<div style="margin-top:16px;padding:12px;background:rgba(255,92,26,0.1);border-left:3px solid #ff5c1a;border-radius:6px;font-size:13px;color:#f5f3ee;">${footerNote}</div>` : ""}
+        <div style="margin-top:24px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);color:#6b7280;font-size:12px;">
           Sent automatically by Jordan, your TEDZ AI assistant.
         </div>
       </div>
@@ -163,7 +163,7 @@ async function sendImmediateAlert(lead, messages) {
   }
   const html = buildEmailHtml({
     headerLabel: "NEW LEAD — CALL ASAP",
-    headerColor: "#1B2C5C",
+    headerColor: "#0a0a0a",
     lead,
     messages,
     footerNote: "This lead was just captured. The conversation may continue, you'll receive a final transcript when it ends.",
@@ -185,7 +185,7 @@ async function sendFinalTranscript(lead, messages, reason) {
 
   const html = buildEmailHtml({
     headerLabel: "FINAL TRANSCRIPT",
-    headerColor: "#243A78",
+    headerColor: "#1c1f26",
     lead,
     messages,
     footerNote: `Conversation finalized: ${reasonText}`,
