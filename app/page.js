@@ -342,30 +342,33 @@ export default function Home() {
   const scrollTo = id => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
   const includes = [
-    { icon: "🌐", title: "Custom Domain Site",        desc: "Fully designed, mobile-first website branded to your business. Fast, secure, and built to convert visitors into booked jobs from day one.",                                                           tag: "Your Brand"  },
-    { icon: "🤖", title: "AI Chat Assistant",          desc: "Captures leads, answers questions, qualifies jobs, and books appointments 24/7. Even when you are on the job site or off the clock.",                                                                  tag: "Always On"   },
-    { icon: "📅", title: "Online Booking",             desc: "Customers book estimates and service calls directly from your site. No missed calls, no phone tag. Jobs land on your calendar automatically.",                                                          tag: "Pro & Elite" },
-    { icon: "📧", title: "Instant Lead Alerts",        desc: "Every chatbot lead fires an immediate notification. Name, number, what they need. Hits your inbox within seconds.",                                                                                    tag: "Every Plan"  },
-    { icon: "📈", title: "Local SEO Setup",            desc: "Built to be found. Google Business integration, structured data, sitemap, and meta optimization. Everything local search requires from day one.",                                                       tag: "Every Plan"  },
-    { icon: "🛡️", title: "Managed Hosting & Security", desc: "Enterprise-grade hosting, SSL certificate, DDoS protection, and 99.9% uptime. Fully managed so you never have to think about it.",                                                                    tag: "Every Plan"  },
+    { icon: "🌐", title: "Your Own Website",             desc: "Professional, mobile-friendly, built to convert. Your name, your colors, your services.",                              tag: "Your Brand"    },
+    { icon: "🤖", title: "AI Chat Assistant",             desc: "Answers questions, captures leads, and sends you the details. 24/7, even when you're off the clock.",                   tag: "Always On"     },
+    { icon: "📅", title: "Online Booking",                desc: "Customers pick a time and book. It lands on your calendar automatically.",                                              tag: "Pro & Elite"   },
+    { icon: "📲", title: "Instant Text & Email Alerts",   desc: "New lead comes in, you get a text and email with their name, number, and what they need.",                              tag: "Every Plan"    },
+    { icon: "📞", title: "AI Answers Your Phone",         desc: "Missed call? AI picks up, qualifies the job, and texts you the details.",                                               tag: "Pro & Elite"   },
+    { icon: "💬", title: "AI Texts Back for You",         desc: "Customer texts your number, AI replies in seconds. Same tone, same info.",                                              tag: "Pro & Elite"   },
+    { icon: "📈", title: "Show Up on Google",             desc: "Google Business setup, search optimization, and everything to get found locally.",                                      tag: "Every Plan"    },
+    { icon: "⭐", title: "Automatic Review Requests",     desc: "After a job, your customer gets a text asking for a Google review. Runs on its own.",                                   tag: "Pro & Elite"   },
+    { icon: "🛡️", title: "Hosting, Security & Updates",   desc: "Your site stays online, fast, and safe. We handle all of it.",                                                         tag: "Every Plan"    },
   ];
 
   const plans = [
     {
       badge: "Plan 01", name: "Starter", tagline: "Get online. Start capturing.",
-      features: ["Custom branded website, up to 5 pages", "Mobile-first, fast-loading design", "AI chatbot, 24/7 lead capture", "Instant lead email alerts", "Google Business profile setup", "Managed hosting & SSL", "Monthly performance report"],
-      off: ["Online booking system", "SEO content writing", "Priority support"],
+      features: ["Custom branded website, up to 5 pages", "Mobile-first, fast-loading design", "AI chatbot, 24/7 lead capture", "Instant lead alerts, email and SMS", "Google Business profile setup", "Managed hosting and SSL", "Monthly performance report"],
+      off: ["Online booking system", "AI voice answering", "AI SMS texting", "SEO content writing"],
       best: "Just getting online",
     },
     {
       badge: "Most Popular — Plan 02", name: "Pro", featured: true, tagline: "Leads in. Jobs booked. You're busy.",
-      features: ["Everything in Starter", "AI chatbot with online booking", "Appointment scheduling built in", "Lead alerts, email & SMS", "Local SEO content (2 pages/month)", "Automated Google review requests", "Competitor visibility report", "Priority 24-hour support"],
+      features: ["Everything in Starter", "AI chatbot with online booking", "AI answers your phone", "AI texts back for you", "Lead alerts, email and SMS", "Local SEO content (2 pages/month)", "Automated Google review requests", "Competitor visibility report", "Priority 24-hour support"],
       off: [],
       best: "Growing service businesses",
     },
     {
       badge: "Plan 03", name: "Elite", tagline: "Full automation. Maximum scale.",
-      features: ["Everything in Pro", "Fully custom AI automation", "Software & CRM integration", "Unlimited SEO content", "Ad campaign management", "Multi-location support", "Custom AI personality & voice", "White-glove onboarding"],
+      features: ["Everything in Pro", "Fully custom AI automation", "Software and CRM integration", "Unlimited SEO content", "Ad campaign management", "Multi-location support", "Custom AI personality and voice", "White-glove onboarding"],
       off: [],
       best: "Established businesses scaling fast",
     },
@@ -502,7 +505,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ── YOUR BRAND. OUR ENGINE. (moved from hero to secondary brand section) ── */}
+      {/* ── YOUR BRAND. OUR ENGINE. ── */}
       <section className="tdz-sec-pad" style={{ padding:"100px 48px", textAlign:"center" }}>
         <div style={{ maxWidth:900, margin:"0 auto" }}>
           <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, letterSpacing:3, color:"#ff5c1a", textTransform:"uppercase", marginBottom:16 }}>Done-For-You AI Websites</div>
@@ -597,7 +600,7 @@ export default function Home() {
       {/* ── EVERY PLAN / INCLUDES ── */}
       <section id="s-includes" className="tdz-sec-pad" style={{ padding:"100px 48px", textAlign:"center" }}>
         <div style={{ maxWidth:1100, margin:"0 auto" }}>
-        <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, letterSpacing:3, color:"#ff5c1a", textTransform:"uppercase", marginBottom:16 }}>Every Plan</div>
+        <div style={{ fontFamily:"'DM Mono',monospace", fontSize:11, letterSpacing:3, color:"#ff5c1a", textTransform:"uppercase", marginBottom:16 }}>What&apos;s Included</div>
         <h2 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:64, textTransform:"uppercase", lineHeight:1, marginBottom:20 }}>Built for the <span style={{ color:"#ff5c1a" }}>Trades.</span></h2>
         <p style={{ fontSize:16, color:"#9ca3af", maxWidth:580, lineHeight:1.7, marginBottom:0, margin:"0 auto" }}>Everything a local service business needs to capture leads, book jobs, and look credible online. We handle the tech. You handle the work.</p>
         <div className="tdz-inc-grid" style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"1px", background:"rgba(255,255,255,0.08)", border:"1px solid rgba(255,255,255,0.08)", marginTop:60, textAlign:"left" }}>

@@ -27,6 +27,10 @@ export const metadata = {
     "AI chatbot for website",
     "AI website builder",
     "24/7 lead capture",
+    "AI phone answering",
+    "AI SMS for business",
+    "AI voice answering service",
+    "missed call AI",
     "HVAC AI chat",
     "HVAC website",
     "roofing website",
@@ -101,16 +105,19 @@ export const metadata = {
   },
 
   // ── Favicons + Mobile Icons ──
+  // These ensure the icon appears in ALL browsers and mobile tabs:
+  // Chrome Android, Safari iOS, Firefox, Edge, Samsung Internet, etc.
   icons: {
     icon: [
       { url: "/tedz_favicon_32.png", sizes: "32x32", type: "image/png" },
       { url: "/tedz_favicon_64.png", sizes: "64x64", type: "image/png" },
+      { url: "/tedz_favicon_192.png", sizes: "192x192", type: "image/png" },
       { url: "/tedz_favicon_256.png", sizes: "256x256", type: "image/png" },
+      { url: "/tedz_favicon_512.png", sizes: "512x512", type: "image/png" },
     ],
-    // Apple touch icon — this is what shows on iPhone/iPad home screens
-    // and in Safari mobile tabs
+    // Apple touch icon — shows on iPhone/iPad home screens and Safari tabs
     apple: [
-      { url: "/tedz_favicon_256.png", sizes: "256x256", type: "image/png" },
+      { url: "/tedz_apple_touch_icon.png", sizes: "180x180", type: "image/png" },
     ],
     // Shortcut icon — fallback for older browsers
     shortcut: "/tedz_favicon_64.png",
@@ -128,14 +135,19 @@ export const metadata = {
     email: true,
   },
 
-  // ── Verification for search engines ──
-  // Uncomment and add your verification codes when you register with each:
-  // verification: {
-  //   google: "your-google-verification-code",
-  //   yandex: "your-yandex-verification-code",
-  //   yahoo: "your-yahoo-verification-code",
-  //   bing: "your-bing-verification-code",
-  // },
+  // ── Search Engine Verification ──
+  // Register your site with each search engine's webmaster tools to get these codes:
+  // Google: https://search.google.com/search-console
+  // Bing (also covers Yahoo & DuckDuckGo): https://www.bing.com/webmasters
+  // Yandex: https://webmaster.yandex.com
+  verification: {
+    // google: "your-google-verification-code",
+    // yandex: "your-yandex-verification-code",
+    // other: {
+    //   "msvalidate.01": "your-bing-verification-code",
+    //   "baidu-site-verification": "your-baidu-verification-code",
+    // },
+  },
 
   // ── Category ──
   category: "technology",
@@ -186,7 +198,7 @@ export default function RootLayout({ children }) {
       name: "United States",
     },
     description:
-      "Done-for-you AI-powered websites for local businesses. Custom branded, mobile-first, with a 24/7 AI chat assistant that captures leads and books appointments.",
+      "Done-for-you AI-powered websites for local businesses. Custom branded, mobile-first, with a 24/7 AI chat assistant that captures leads, books appointments, answers calls, and responds to texts.",
     offers: {
       "@type": "Offer",
       availability: "https://schema.org/InStock",
@@ -200,6 +212,12 @@ export default function RootLayout({ children }) {
         <meta name="theme-color" content="#0a0a0a" />
         <meta name="msapplication-TileColor" content="#0a0a0a" />
         <meta name="msapplication-TileImage" content="/tedz_favicon_256.png" />
+
+        {/* Extra mobile browser favicon hints */}
+        {/* Samsung Internet, UC Browser, Opera Mini */}
+        <link rel="icon" type="image/png" sizes="192x192" href="/tedz_favicon_192.png" />
+        {/* Safari pinned tab (SVG mask icon) — optional, use if you have an SVG version */}
+        {/* <link rel="mask-icon" href="/tedz_safari_pinned.svg" color="#ff5c1a" /> */}
 
         {/* Structured data for search engines */}
         <script
