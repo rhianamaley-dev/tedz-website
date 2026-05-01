@@ -359,13 +359,13 @@ export default function Home() {
     },
     {
       badge: "Most Popular — Plan 02", name: "Pro", featured: true, tagline: "Leads in. Jobs booked. You're busy.",
-      features: ["Everything in Starter", "AI chatbot with online booking", "Appointment scheduling built in", "Lead alerts, email & SMS", "Local SEO content (2 pages/month)", "Automated Google review requests", "Competitor visibility report", "Priority 24-hour support", "Quarterly strategy call"],
+      features: ["Everything in Starter", "AI chatbot with online booking", "Appointment scheduling built in", "Lead alerts, email & SMS", "Local SEO content (2 pages/month)", "Automated Google review requests", "Competitor visibility report", "Priority 24-hour support"],
       off: [],
       best: "Growing service businesses",
     },
     {
       badge: "Plan 03", name: "Elite", tagline: "Full automation. Maximum scale.",
-      features: ["Everything in Pro", "Fully custom AI automation", "Software & CRM integration", "Unlimited SEO content", "Ad campaign management", "Multi-location support", "Custom AI personality & voice", "White-glove onboarding", "Monthly 1-on-1 strategy call", "Dedicated account manager"],
+      features: ["Everything in Pro", "Fully custom AI automation", "Software & CRM integration", "Unlimited SEO content", "Ad campaign management", "Multi-location support", "Custom AI personality & voice", "White-glove onboarding"],
       off: [],
       best: "Established businesses scaling fast",
     },
