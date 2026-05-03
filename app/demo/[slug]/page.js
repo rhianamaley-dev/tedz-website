@@ -264,43 +264,13 @@ RULES:
           gap: 12,
         }}
       >
-        <div
-          style={{
-            width: 42,
-            height: 42,
-            borderRadius: 12,
-            background: client.color,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: 20,
-          }}
-        >
-          {client.logo}
-        </div>
         <div style={{ flex: 1 }}>
-          <div style={{ color: "#fff", fontWeight: 700, fontSize: 15 }}>
-            {client.name}
+          <div style={{ color: "#fff", fontWeight: 700, fontSize: 15, display: "flex", alignItems: "center", gap: 8 }}>
+            Jordan
+            <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#4ADE80", display: "inline-block", boxShadow: "0 0 6px rgba(74,222,128,0.5)" }} />
           </div>
-          <div
-            style={{
-              color: client.colorLight,
-              fontSize: 12,
-              display: "flex",
-              alignItems: "center",
-              gap: 5,
-            }}
-          >
-            <span
-              style={{
-                width: 6,
-                height: 6,
-                borderRadius: "50%",
-                background: "#4ADE80",
-                display: "inline-block",
-              }}
-            />
-            Online — replies instantly
+          <div style={{ color: client.colorLight, fontSize: 11, letterSpacing: "1px", textTransform: "uppercase" }}>
+            AI Assistant — {client.name}
           </div>
         </div>
         <button
