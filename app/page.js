@@ -16,36 +16,7 @@ const STARTER_QUICK_REPLIES = [
   "I'm just browsing",
 ];
 
-/* ────────────────────────────────────────────
-   ILLUSTRATED AVATAR — recolored for dark theme
-   ──────────────────────────────────────────── */
-function AssistantAvatar({ size = 44 }) {
-  return (
-    <div style={{
-      width: size, height: size, borderRadius: "50%", overflow: "hidden",
-      flexShrink: 0, background: "#1c1f26",
-      display: "flex", alignItems: "center", justifyContent: "center",
-      border: "2px solid #ff5c1a",
-    }}>
-      <svg viewBox="0 0 64 64" width={size} height={size} xmlns="http://www.w3.org/2000/svg">
-        <circle cx="32" cy="32" r="32" fill="#F5DEB3" />
-        <path d="M14 30 Q14 14 32 14 Q50 14 50 30 L50 38 Q48 32 44 32 L20 32 Q16 32 14 38 Z" fill="#3E2A1F"/>
-        <ellipse cx="32" cy="36" rx="13" ry="15" fill="#E8C39E"/>
-        <path d="M19 26 Q24 22 32 22 Q40 22 45 26 Q42 28 38 27 Q35 30 32 28 Q29 30 26 27 Q22 28 19 26 Z" fill="#3E2A1F"/>
-        <ellipse cx="27" cy="36" rx="1.4" ry="1.8" fill="#0a0a0a"/>
-        <ellipse cx="37" cy="36" rx="1.4" ry="1.8" fill="#0a0a0a"/>
-        <circle cx="27.4" cy="35.5" r="0.5" fill="#fff"/>
-        <circle cx="37.4" cy="35.5" r="0.5" fill="#fff"/>
-        <path d="M24 33 Q27 32 30 33" stroke="#3E2A1F" strokeWidth="1.2" strokeLinecap="round" fill="none"/>
-        <path d="M34 33 Q37 32 40 33" stroke="#3E2A1F" strokeWidth="1.2" strokeLinecap="round" fill="none"/>
-        <path d="M32 39 L31 42 L33 42" stroke="#C4936B" strokeWidth="0.8" strokeLinecap="round" fill="none"/>
-        <path d="M28 45 Q32 48 36 45" stroke="#8B4A38" strokeWidth="1.4" strokeLinecap="round" fill="none"/>
-        <path d="M14 64 Q14 52 24 50 Q28 54 32 54 Q36 54 40 50 Q50 52 50 64 Z" fill="#1c1f26"/>
-        <path d="M28 53 L32 56 L36 53" stroke="#ff5c1a" strokeWidth="0.8" fill="none" opacity="0.6"/>
-      </svg>
-    </div>
-  );
-}
+
 
 /* ────────────────────────────────────────────
    RENDER MESSAGE CONTENT — booking links
@@ -184,8 +155,7 @@ function ChatWidget({ isOpen, onToggle }) {
     }}>
       {/* Header */}
       <div style={{ background: "linear-gradient(135deg,#0a0a0a,#1c1f26)", padding: "16px 18px", display: "flex", alignItems: "center", borderBottom: "1px solid rgba(255,92,26,0.2)" }}>
-        <AssistantAvatar size={42} />
-        <div style={{ flex: 1, marginLeft: 12 }}>
+        <div style={{ flex: 1 }}>
           <div style={{ color: "#f5f3ee", fontWeight: 700, fontSize: 15, display: "flex", alignItems: "center", gap: 8, fontFamily: "'DM Sans', sans-serif" }}>
             {ASSISTANT.name}
             <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#4ADE80", display: "inline-block", boxShadow: "0 0 6px rgba(74,222,128,0.5)" }} />
@@ -199,7 +169,7 @@ function ChatWidget({ isOpen, onToggle }) {
       <div style={{ flex: 1, overflowY: "auto", padding: "16px 14px 8px", background: "#0a0a0a" }}>
         {messages.map((m, i) => (
           <div key={i} style={{ display: "flex", marginBottom: 12, alignItems: "flex-end", justifyContent: m.role === "user" ? "flex-end" : "flex-start" }}>
-            {m.role === "assistant" && <div style={{ marginRight: 8, alignSelf: "flex-end" }}><AssistantAvatar size={26} /></div>}
+
             <div style={{
               maxWidth: "78%", padding: "10px 14px", borderRadius: 12,
               fontSize: 13, lineHeight: 1.55, whiteSpace: "pre-line", fontFamily: "'DM Sans', sans-serif",
@@ -230,7 +200,6 @@ function ChatWidget({ isOpen, onToggle }) {
 
         {typing && (
           <div style={{ display: "flex", marginBottom: 12, alignItems: "flex-end" }}>
-            <div style={{ marginRight: 8 }}><AssistantAvatar size={26} /></div>
             <div style={{ background: "#1c1f26", border: "1px solid rgba(255,255,255,0.07)", padding: "12px 18px", borderRadius: 12, display: "flex", gap: 5 }}>
               {[0, 0.15, 0.3].map((d, i) => (
                 <span key={i} style={{ width: 7, height: 7, borderRadius: "50%", background: "#6b7280", display: "inline-block", animation: `tdzBounce 1.2s ${d}s ease-in-out infinite` }} />
